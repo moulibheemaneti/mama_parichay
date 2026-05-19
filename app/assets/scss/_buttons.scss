@@ -1,0 +1,54 @@
+@use 'variables' as *;
+
+.btn {
+  padding: 0.7rem 2rem;
+  border: none;
+  cursor: pointer;
+  font-family: $font-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  border-radius: 1px;
+  transition: all 0.2s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  &--primary {
+    background: linear-gradient(135deg, $border-gold, $turmeric);
+    color: $bg-body;
+    font-weight: 600;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba($gold, 0.3);
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    color: $border-gold;
+    border: 1px solid rgba($gold, 0.4);
+
+    &:hover:not(:disabled) {
+      border-color: $turmeric;
+      color: $turmeric;
+    }
+  }
+
+  &--download {
+    background: linear-gradient(135deg, $kumkum, $deep-red);
+    color: $cream;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.85rem 2.5rem;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba($kumkum, 0.4);
+    }
+  }
+}

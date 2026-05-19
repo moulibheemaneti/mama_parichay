@@ -1,0 +1,134 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.section-card {
+  background: $card-bg;
+  border: 1px solid $border-subtle;
+  border-radius: 2px;
+  padding: 1.8rem 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $turmeric, transparent);
+  }
+}
+
+.section-title {
+  font-family: $font-display;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: $turmeric;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+
+  @include section-title-line;
+
+  &__hint {
+    font-size: 0.75rem;
+    color: $text-muted;
+    font-style: italic;
+    font-weight: 300;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  &.single {
+    grid-template-columns: 1fr;
+  }
+
+  &.triple {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @include respond-below($breakpoint-md) {
+    grid-template-columns: 1fr;
+
+    &.triple {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $text-muted;
+    font-family: $font-serif;
+  }
+
+  input,
+  select,
+  textarea {
+    background: $input-bg;
+    border: 1px solid $input-border;
+    border-radius: 2px;
+    padding: 0.6rem 0.9rem;
+    color: $text-heading;
+    font-family: $font-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+
+    &:focus {
+      @include focus-field;
+    }
+
+    &::placeholder {
+      color: $text-dim;
+      font-style: italic;
+    }
+  }
+
+  select option {
+    background: #2a1200;
+    color: $text-heading;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+
+  input[type='date'] {
+    color-scheme: dark;
+
+    &::-webkit-calendar-picker-indicator {
+      filter: invert(0.7) sepia(1) saturate(3) hue-rotate(5deg);
+      cursor: pointer;
+    }
+  }
+
+  input[type='number'] {
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      opacity: 0.4;
+    }
+  }
+}
+
+.btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
