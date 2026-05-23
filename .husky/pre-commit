@@ -1,0 +1,2 @@
+bun eslint .
+bun stylelint '**/*.scss'
