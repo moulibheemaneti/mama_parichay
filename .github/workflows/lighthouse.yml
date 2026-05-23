@@ -137,6 +137,7 @@ jobs:
               `| Accessibility  | ${formatScore(getScore(desktopManifest, 'accessibility'))}  | ${formatScore(getScore(mobileManifest, 'accessibility'))}  |`,
               `| Best Practices | ${formatScore(getScore(desktopManifest, 'best-practices'))} | ${formatScore(getScore(mobileManifest, 'best-practices'))} |`,
               `| SEO            | ${formatScore(getScore(desktopManifest, 'seo'))}            | ${formatScore(getScore(mobileManifest, 'seo'))}            |`,
+              '|---|---|---|',
               '',
               `🔗 ${reportLinks}`,
             ].join('\n')
