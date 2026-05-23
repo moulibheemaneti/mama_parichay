@@ -89,30 +89,29 @@ jobs:
             const path = require('path')
 
             const readManifest = (dir) => {
+            // Read scores from lhr-*.json files (Lighthouse result files)
+            const readLhrScores = (dir) => {
               try {
-                const manifestPath = path.join(dir, 'manifest.json')
-                if (!fs.existsSync(manifestPath)) return null
-                const data = JSON.parse(fs.readFileSync(manifestPath, 'utf8'))
-                return Array.isArray(data) ? data : null
-              } catch {
+                if (!fs.existsSync(dir)) return null
+                const files = fs.readdirSync(dir).filter(f => f.startsWith('lhr-') && f.endsWith('.json'))
+                if (!files.length) return null
+                // Take the last run (most recent)
+                const lhr = JSON.parse(fs.readFileSync(path.join(dir, files[files.length - 1]), 'utf8'))
+                return {
+                  performance:    lhr.categories?.performance?.score,
+                  accessibility:  lhr.categories?.accessibility?.score,
+                  'best-practices': lhr.categories?.['best-practices']?.score,
+                  seo:            lhr.categories?.seo?.score,
+                  reportUrl:      lhr.runnerData?.url || null,
+                }
+              } catch (e) {
+                console.log('Error reading lhr:', e.message)
                 return null
               }
             }
 
-            const readLinks = (dir) => {
-              try {
-                const linksPath = path.join(dir, 'links.json')
-                if (!fs.existsSync(linksPath)) return null
-                return JSON.parse(fs.readFileSync(linksPath, 'utf8'))
-              } catch {
-                return null
-              }
-            }
-
-            const desktopManifest = readManifest('./lighthouse-desktop')
-            const mobileManifest  = readManifest('./lighthouse-mobile')
-            const desktopLinks    = readLinks('./lighthouse-desktop')
-            const mobileLinks     = readLinks('./lighthouse-mobile')
+            const desktop = readLhrScores('./lighthouse-desktop')
+            const mobile  = readLhrScores('./lighthouse-mobile')
 
             const formatScore = (score) => {
               if (score == null) return '⚠️ failed'
@@ -122,11 +121,8 @@ jobs:
               return `🔴 ${val}`
             }
 
-            const getScore = (manifest, key) =>
-              manifest?.length ? manifest[0].summary[key] : null
-
-            const desktopReportUrl = desktopLinks ? Object.values(desktopLinks)[0] : null
-            const mobileReportUrl  = mobileLinks  ? Object.values(mobileLinks)[0]  : null
+            const desktopReportUrl = desktop?.reportUrl || null
+            const mobileReportUrl  = mobile?.reportUrl  || null
 
             const reportLinks = [
               desktopReportUrl ? `[Desktop report](${desktopReportUrl})` : '~~Desktop report~~ (failed)',
@@ -138,10 +134,10 @@ jobs:
               '',
               '| Category | 🖥️ Desktop | 📱 Mobile |',
               '|---|---|---|',
-              `| Performance    | ${formatScore(getScore(desktopManifest, 'performance'))}    | ${formatScore(getScore(mobileManifest, 'performance'))}    |`,
-              `| Accessibility  | ${formatScore(getScore(desktopManifest, 'accessibility'))}  | ${formatScore(getScore(mobileManifest, 'accessibility'))}  |`,
-              `| Best Practices | ${formatScore(getScore(desktopManifest, 'best-practices'))} | ${formatScore(getScore(mobileManifest, 'best-practices'))} |`,
-              `| SEO            | ${formatScore(getScore(desktopManifest, 'seo'))}            | ${formatScore(getScore(mobileManifest, 'seo'))}            |`,
+              `| Performance    | ${formatScore(desktop?.performance)}    | ${formatScore(mobile?.performance)}    |`,
+              `| Accessibility  | ${formatScore(desktop?.accessibility)}  | ${formatScore(mobile?.accessibility)}  |`,
+              `| Best Practices | ${formatScore(desktop?.['best-practices'])} | ${formatScore(mobile?.['best-practices'])} |`,
+              `| SEO            | ${formatScore(desktop?.seo)}            | ${formatScore(mobile?.seo)}            |`,
               '',
               `🔗 ${reportLinks}`,
             ].join('\n')
