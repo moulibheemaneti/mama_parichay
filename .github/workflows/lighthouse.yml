@@ -75,6 +75,11 @@ jobs:
           name: lighthouse-mobile
           path: ./lighthouse-mobile
 
+      - name: Debug — list downloaded files
+        run: |
+          echo "=== Desktop ===" && ls -la ./lighthouse-desktop 2>/dev/null || echo "desktop dir missing"
+          echo "=== Mobile ===" && ls -la ./lighthouse-mobile 2>/dev/null || echo "mobile dir missing"
+
       - name: Post combined scores as PR comment
         uses: actions/github-script@v7
         with:
@@ -137,7 +142,6 @@ jobs:
               `| Accessibility  | ${formatScore(getScore(desktopManifest, 'accessibility'))}  | ${formatScore(getScore(mobileManifest, 'accessibility'))}  |`,
               `| Best Practices | ${formatScore(getScore(desktopManifest, 'best-practices'))} | ${formatScore(getScore(mobileManifest, 'best-practices'))} |`,
               `| SEO            | ${formatScore(getScore(desktopManifest, 'seo'))}            | ${formatScore(getScore(mobileManifest, 'seo'))}            |`,
-              '|---|---|---|',
               '',
               `🔗 ${reportLinks}`,
             ].join('\n')
