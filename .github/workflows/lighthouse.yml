@@ -53,30 +53,26 @@ jobs:
             const url = Object.keys(links)[0]
             const reportUrl = links[url]
 
-            const body = `## ⚡ Lighthouse Report
+            const body = `## ⚡ Lighthouse Report\n\n| Category | Score |\n|---|---|\n| Performance | ${formatScore(result['performance'])} |\n| Accessibility | ${formatScore(result['accessibility'])} |\n| Best Practices | ${formatScore(result['best-practices'])} |\n| SEO | ${formatScore(result['seo'])} |\n\n🔗 [Full report](${reportUrl}) · Audited: ${url}`
 
-            | Category | Score |
-            |---|---|
-            | Performance | ${formatScore(result['performance'])} |
-            | Accessibility | ${formatScore(result['accessibility'])} |
-            | Best Practices | ${formatScore(result['best-practices'])} |
-            | SEO | ${formatScore(result['seo'])} |
+            // Use the SHA from the deployment to find the associated PR
+            const sha = context.payload.deployment.sha
 
-            🔗 [Full report](${reportUrl}) · Audited: ${url}`
-
-            // Find existing PR for this commit and post/update the comment
-            const prs = await github.rest.pulls.list({
+            const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              state: 'open',
-              head: `${context.repo.owner}:${context.payload.deployment.ref}`
+              commit_sha: sha,
             })
 
-            if (prs.data.length === 0) return
+            if (!prs.data || prs.data.length === 0) {
+              console.log('No PR found for this commit SHA:', sha)
+              return
+            }
 
             const prNumber = prs.data[0].number
+            console.log('Posting to PR #' + prNumber)
 
-            // Find existing lighthouse comment to update instead of spamming new ones
+            // Find existing lighthouse comment to update instead of creating a new one
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -84,7 +80,8 @@ jobs:
             })
 
             const existing = comments.data.find(c =>
-              c.user.login === 'github-actions[bot]' && c.body.includes('Lighthouse Report')
+              c.user.login === 'github-actions[bot]' &&
+              c.body.includes('Lighthouse Report')
             )
 
             if (existing) {
