@@ -90,7 +90,7 @@
    // --- File nesting (keeps explorer clean) ---
    "explorer.fileNesting.enabled": true,
    "explorer.fileNesting.patterns": {
-      "release.config.mjs": "lighthouserc.mjs",
+      "release.config.mjs": "lighthouserc.json, lighthouserc.*.json",
       "package.json": "bun.lock",
       "nuxt.config.*": ".nuxtignore, .nuxtrc, tsconfig.json",
       "eslint.config.*": ".eslintignore, stylelint.config.mjs, commitlint.config.ts",
