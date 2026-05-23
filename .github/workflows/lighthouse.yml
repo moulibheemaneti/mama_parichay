@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.deployment_status.state == 'success'
 
+    outputs:
+      links: ${{ steps.lighthouse.outputs.links }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,6 +37,9 @@ jobs:
     name: Lighthouse Audit — Mobile
     runs-on: ubuntu-latest
     if: github.event.deployment_status.state == 'success'
+
+    outputs:
+      links: ${{ steps.lighthouse.outputs.links }}
 
     steps:
       - name: Checkout code
@@ -75,12 +81,6 @@ jobs:
           name: lighthouse-mobile
           path: ./lighthouse-mobile
 
-      - name: Debug — list downloaded files
-        run: |
-          echo "=== Desktop ===" && ls -la ./lighthouse-desktop 2>/dev/null || echo "desktop dir missing"
-          echo "=== Mobile ===" && ls -la ./lighthouse-mobile 2>/dev/null || echo "mobile dir missing"
-          echo "=== assertion-results.json ===" && cat ./lighthouse-desktop/assertion-results.json 2>/dev/null || echo "not found"
-
       - name: Post combined scores as PR comment
         uses: actions/github-script@v7
         with:
@@ -121,22 +121,23 @@ jobs:
               return `🔴 ${val}`
             }
 
-            // Read report URL from assertion-results.json
-            const readReportUrl = (dir) => {
+            // Links output is small enough to pass as job output (just a URL string)
+            const desktopLinksRaw = `${{ needs.lighthouse_desktop.outputs.links }}`
+            const mobileLinksRaw  = `${{ needs.lighthouse_mobile.outputs.links }}`
+
+            const parseReportUrl = (raw) => {
               try {
-                const assertPath = path.join(dir, 'assertion-results.json')
-                if (!fs.existsSync(assertPath)) return null
-                const data = JSON.parse(fs.readFileSync(assertPath, 'utf8'))
-                return data?.results?.[0]?.url || null
+                const parsed = JSON.parse(raw)
+                return parsed ? Object.values(parsed)[0] : null
               } catch { return null }
             }
 
-            const desktopReportUrl = readReportUrl('./lighthouse-desktop')
-            const mobileReportUrl  = readReportUrl('./lighthouse-mobile')
+            const desktopAuditedUrl = parseReportUrl(desktopLinksRaw)
+            const mobileAuditedUrl  = parseReportUrl(mobileLinksRaw)
 
             const reportLinks = [
-              desktopReportUrl ? `[Desktop report](${desktopReportUrl})` : '~~Desktop report~~ (failed)',
-              mobileReportUrl  ? `[Mobile report](${mobileReportUrl})`   : '~~Mobile report~~ (failed)',
+              desktopAuditedUrl ? `[Desktop report](${desktopAuditedUrl})` : '~~Desktop report~~ (failed)',
+              mobileAuditedUrl  ? `[Mobile report](${mobileAuditedUrl})`   : '~~Mobile report~~ (failed)',
             ].join(' · ')
 
             const body = [
