@@ -79,6 +79,7 @@ jobs:
         run: |
           echo "=== Desktop ===" && ls -la ./lighthouse-desktop 2>/dev/null || echo "desktop dir missing"
           echo "=== Mobile ===" && ls -la ./lighthouse-mobile 2>/dev/null || echo "mobile dir missing"
+          echo "=== assertion-results.json ===" && cat ./lighthouse-desktop/assertion-results.json 2>/dev/null || echo "not found"
 
       - name: Post combined scores as PR comment
         uses: actions/github-script@v7
@@ -101,7 +102,7 @@ jobs:
                   accessibility:  lhr.categories?.accessibility?.score,
                   'best-practices': lhr.categories?.['best-practices']?.score,
                   seo:            lhr.categories?.seo?.score,
-                  reportUrl:      lhr.runnerData?.url || null,
+                  reportUrl:      null, // resolved separately from assertion-results.json
                 }
               } catch (e) {
                 console.log('Error reading lhr:', e.message)
@@ -120,8 +121,18 @@ jobs:
               return `🔴 ${val}`
             }
 
-            const desktopReportUrl = desktop?.reportUrl || null
-            const mobileReportUrl  = mobile?.reportUrl  || null
+            // Read report URL from assertion-results.json
+            const readReportUrl = (dir) => {
+              try {
+                const assertPath = path.join(dir, 'assertion-results.json')
+                if (!fs.existsSync(assertPath)) return null
+                const data = JSON.parse(fs.readFileSync(assertPath, 'utf8'))
+                return data?.results?.[0]?.url || null
+              } catch { return null }
+            }
+
+            const desktopReportUrl = readReportUrl('./lighthouse-desktop')
+            const mobileReportUrl  = readReportUrl('./lighthouse-mobile')
 
             const reportLinks = [
               desktopReportUrl ? `[Desktop report](${desktopReportUrl})` : '~~Desktop report~~ (failed)',
