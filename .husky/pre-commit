@@ -1,1 +1,2 @@
-bun generate
+bun eslint .
+bun stylelint "**/*.scss"

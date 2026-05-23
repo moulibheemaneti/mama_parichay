@@ -1,8 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-   compatibilityDate: '2025-07-15',
+
+   modules: [
+      "@nuxt/eslint",
+   ],
    devtools: { enabled: true },
+
    css: [
-      '~/assets/scss/main.scss'
-   ]
+      "~/assets/scss/main.scss",
+   ],
+
+   // YYYY-MM-DD
+   compatibilityDate: "2026-05-23",
+
+   eslint: {
+      config: {
+         stylistic: true,
+      },
+   },
 })

@@ -17,6 +17,7 @@
       // SCSS IntelliSense
       "mrmlnc.vscode-scss",
       // Bun runtime support
-      "oven.bun-vscode"
+      "oven.bun-vscode",
+      "stylelint.vscode-stylelint"
    ]
 }
