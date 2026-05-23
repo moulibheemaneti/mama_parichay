@@ -90,10 +90,13 @@
    // --- File nesting (keeps explorer clean) ---
    "explorer.fileNesting.enabled": true,
    "explorer.fileNesting.patterns": {
-      "nuxt.config.*": ".nuxtignore, .nuxtrc",
-      "package.json": "package-lock.json, bun.lockb, .npmrc, .nvmrc, .node-version",
-      "eslint.config.*": ".eslintignore",
-      ".editorconfig": ".vscode"
+      "release.config.mjs": "lighthouserc.mjs",
+      "package.json": "bun.lock",
+      "nuxt.config.*": ".nuxtignore, .nuxtrc, tsconfig.json",
+      "eslint.config.*": ".eslintignore, stylelint.config.mjs, commitlint.config.ts",
+      ".editorconfig": ".vscode",
+      ".env.example": ".env, .env.dev, .env.stage, .env.prod",
+      "README.md": "CHANGELOG.md, LICENSE"
    },
    // --- Misc ---
    "files.eol": "\n",
