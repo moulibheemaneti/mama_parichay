@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "settings": {
-        "preset": "perf",
+        "preset": "desktop",
         "emulatedFormFactor": "mobile",
         "throttling": {
           "rttMs": 150,
