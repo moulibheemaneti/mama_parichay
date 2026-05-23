@@ -121,15 +121,23 @@ jobs:
               return `🔴 ${val}`
             }
 
+            // Debug — log raw links output
+            console.log('Desktop links raw:', `${{ needs.lighthouse_desktop.outputs.links }}`)
+            console.log('Mobile links raw:', `${{ needs.lighthouse_mobile.outputs.links }}`)
+
             // Links output is small enough to pass as job output (just a URL string)
             const desktopLinksRaw = `${{ needs.lighthouse_desktop.outputs.links }}`
             const mobileLinksRaw  = `${{ needs.lighthouse_mobile.outputs.links }}`
 
             const parseReportUrl = (raw) => {
               try {
+                if (!raw || raw === 'null' || raw === '') return null
                 const parsed = JSON.parse(raw)
                 return parsed ? Object.values(parsed)[0] : null
-              } catch { return null }
+              } catch (e) {
+                console.log('Parse error:', e.message, 'raw:', raw)
+                return null
+              }
             }
 
             const desktopAuditedUrl = parseReportUrl(desktopLinksRaw)
