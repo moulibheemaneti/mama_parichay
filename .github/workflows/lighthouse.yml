@@ -17,6 +17,10 @@ jobs:
     # Only run when Vercel deployment succeeded — skip failed or pending deploys
     if: github.event.deployment_status.state == 'success'
 
+    permissions:
+      pull-requests: write
+      issues: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
