@@ -4,9 +4,6 @@
       "settings": {
         "preset": "perf",
         "emulatedFormFactor": "mobile",
-        "extraHeaders": {
-          "x-vercel-protection-bypass": "$VERCEL_AUTOMATION_BYPASS_SECRET"
-        },
         "throttling": {
           "rttMs": 150,
           "throughputKbps": 1638.4,

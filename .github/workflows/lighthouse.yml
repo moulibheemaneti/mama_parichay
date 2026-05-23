@@ -1,7 +1,5 @@
 name: Lighthouse CI
 
-# Triggers automatically when Vercel finishes a preview deployment
-# No polling, no waiting — Vercel fires this event on its own
 on:
   deployment_status:
 
@@ -29,7 +27,7 @@ jobs:
         id: lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: ${{ github.event.deployment_status.target_url }}
+          urls: ${{ github.event.deployment_status.target_url }}?x-vercel-protection-bypass=${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
           configPath: ./lighthouserc.json
           uploadArtifacts: true
           artifactName: lighthouse-desktop
@@ -53,7 +51,7 @@ jobs:
         id: lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: ${{ github.event.deployment_status.target_url }}
+          urls: ${{ github.event.deployment_status.target_url }}?x-vercel-protection-bypass=${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
           configPath: ./lighthouserc.mobile.json
           uploadArtifacts: true
           artifactName: lighthouse-mobile
