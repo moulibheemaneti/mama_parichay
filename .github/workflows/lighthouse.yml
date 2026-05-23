@@ -27,7 +27,7 @@ jobs:
         with:
           # Vercel injects the preview URL automatically via deployment_status event
           urls: ${{ github.event.deployment_status.target_url }}
-          configPath: ./lighthouserc.mjs
+          configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true   # stores report for 7 days, no server needed
           runs: 2                        # run twice, take median — reduces flakiness
