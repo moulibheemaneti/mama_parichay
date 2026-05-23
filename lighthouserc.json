@@ -2,7 +2,10 @@
   "ci": {
     "collect": {
       "settings": {
-        "preset": "desktop"
+        "preset": "desktop",
+        "extraHeaders": {
+          "x-vercel-protection-bypass": "$VERCEL_AUTOMATION_BYPASS_SECRET"
+        }
       }
     },
     "assert": {

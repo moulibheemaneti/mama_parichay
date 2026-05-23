@@ -10,96 +10,123 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lighthouse:
-    name: Lighthouse Audit
-    runs-on: ubuntu-latest
 
-    # Only run when Vercel deployment succeeded — skip failed or pending deploys
+  # ─── Desktop and Mobile run in parallel ──────────────────────────────────
+  lighthouse_desktop:
+    name: Lighthouse Audit — Desktop
+    runs-on: ubuntu-latest
     if: github.event.deployment_status.state == 'success'
+
+    outputs:
+      manifest: ${{ steps.lighthouse.outputs.manifest }}
+      links: ${{ steps.lighthouse.outputs.links }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse audit — Desktop
+        id: lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: ${{ github.event.deployment_status.target_url }}
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          artifactName: lighthouse-desktop
+          temporaryPublicStorage: true
+          runs: 2
+
+  lighthouse_mobile:
+    name: Lighthouse Audit — Mobile
+    runs-on: ubuntu-latest
+    if: github.event.deployment_status.state == 'success'
+
+    outputs:
+      manifest: ${{ steps.lighthouse.outputs.manifest }}
+      links: ${{ steps.lighthouse.outputs.links }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse audit — Mobile
+        id: lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: ${{ github.event.deployment_status.target_url }}
+          configPath: ./lighthouserc.mobile.json
+          uploadArtifacts: true
+          artifactName: lighthouse-mobile
+          temporaryPublicStorage: true
+          runs: 2
+
+  # ─── Combine results and post single PR comment ───────────────────────────
+  comment:
+    name: Post Lighthouse Comment
+    runs-on: ubuntu-latest
+    needs: [lighthouse_desktop, lighthouse_mobile]
+    if: always() && github.event.deployment_status.state == 'success'
 
     permissions:
       pull-requests: write
       issues: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run Lighthouse audit on Vercel preview URL — Desktop
-        id: lighthouse_desktop
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: ${{ github.event.deployment_status.target_url }}
-          configPath: ./lighthouserc.json
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          runs: 2
-          extraHeaders: '{"x-vercel-protection-bypass": "${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}"}'
-
-      - name: Run Lighthouse audit on Vercel preview URL — Mobile
-        id: lighthouse_mobile
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: ${{ github.event.deployment_status.target_url }}
-          configPath: ./lighthouserc.mobile.json
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          runs: 2
-          extraHeaders: '{"x-vercel-protection-bypass": "${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}"}'
-
-      - name: Post Lighthouse scores as PR comment
+      - name: Post combined scores as PR comment
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const desktopManifest = ${{ steps.lighthouse_desktop.outputs.manifest }}
-            const mobileManifest  = ${{ steps.lighthouse_mobile.outputs.manifest }}
-            const desktopLinks    = ${{ steps.lighthouse_desktop.outputs.links }}
-            const mobileLinks     = ${{ steps.lighthouse_mobile.outputs.links }}
-
-            if (!desktopManifest?.length || !mobileManifest?.length) return
-
-            const desktopResult = desktopManifest[0].summary
-            const mobileResult  = mobileManifest[0].summary
+            const desktopManifest = ${{ needs.lighthouse_desktop.outputs.manifest || 'null' }}
+            const mobileManifest  = ${{ needs.lighthouse_mobile.outputs.manifest || 'null' }}
+            const desktopLinks    = ${{ needs.lighthouse_desktop.outputs.links || 'null' }}
+            const mobileLinks     = ${{ needs.lighthouse_mobile.outputs.links || 'null' }}
 
             const formatScore = (score) => {
+              if (score == null) return '⚠️ failed'
               const val = Math.round(score * 100)
               if (val >= 90) return `🟢 ${val}`
               if (val >= 70) return `🟡 ${val}`
               return `🔴 ${val}`
             }
 
-            const desktopReportUrl = Object.values(desktopLinks)[0]
-            const mobileReportUrl  = Object.values(mobileLinks)[0]
+            const getScore = (manifest, key) =>
+              manifest?.length ? manifest[0].summary[key] : null
+
+            const desktopReportUrl = desktopLinks ? Object.values(desktopLinks)[0] : null
+            const mobileReportUrl  = mobileLinks  ? Object.values(mobileLinks)[0]  : null
+
+            const reportLinks = [
+              desktopReportUrl ? `[Desktop report](${desktopReportUrl})` : '~~Desktop report~~ (failed)',
+              mobileReportUrl  ? `[Mobile report](${mobileReportUrl})`   : '~~Mobile report~~ (failed)',
+            ].join(' · ')
 
             const body = [
               '## ⚡ Lighthouse Report',
               '',
               '| Category | 🖥️ Desktop | 📱 Mobile |',
               '|---|---|---|',
-              `| Performance    | ${formatScore(desktopResult['performance'])}    | ${formatScore(mobileResult['performance'])}    |`,
-              `| Accessibility  | ${formatScore(desktopResult['accessibility'])}  | ${formatScore(mobileResult['accessibility'])}  |`,
-              `| Best Practices | ${formatScore(desktopResult['best-practices'])} | ${formatScore(mobileResult['best-practices'])} |`,
-              `| SEO            | ${formatScore(desktopResult['seo'])}            | ${formatScore(mobileResult['seo'])}            |`,
+              `| Performance    | ${formatScore(getScore(desktopManifest, 'performance'))}    | ${formatScore(getScore(mobileManifest, 'performance'))}    |`,
+              `| Accessibility  | ${formatScore(getScore(desktopManifest, 'accessibility'))}  | ${formatScore(getScore(mobileManifest, 'accessibility'))}  |`,
+              `| Best Practices | ${formatScore(getScore(desktopManifest, 'best-practices'))} | ${formatScore(getScore(mobileManifest, 'best-practices'))} |`,
+              `| SEO            | ${formatScore(getScore(desktopManifest, 'seo'))}            | ${formatScore(getScore(mobileManifest, 'seo'))}            |`,
               '',
-              `🔗 [Desktop report](${desktopReportUrl}) · [Mobile report](${mobileReportUrl})`,
+              `🔗 ${reportLinks}`,
             ].join('\n')
 
             const sha = context.payload.deployment.sha
-
             const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
               owner: context.repo.owner,
               repo: context.repo.repo,
               commit_sha: sha,
             })
 
-            if (!prs.data || prs.data.length === 0) {
+            if (!prs.data?.length) {
               console.log('No PR found for commit SHA:', sha)
               return
             }
 
             const prNumber = prs.data[0].number
-            console.log('Posting to PR #' + prNumber)
 
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
