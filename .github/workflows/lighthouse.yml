@@ -15,9 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.deployment_status.state == 'success'
 
-    outputs:
-      links: ${{ steps.lighthouse.outputs.links }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -37,9 +34,6 @@ jobs:
     name: Lighthouse Audit — Mobile
     runs-on: ubuntu-latest
     if: github.event.deployment_status.state == 'success'
-
-    outputs:
-      links: ${{ steps.lighthouse.outputs.links }}
 
     steps:
       - name: Checkout code
@@ -121,27 +115,21 @@ jobs:
               return `🔴 ${val}`
             }
 
-            // Debug — log raw links output
-            console.log('Desktop links raw:', `${{ needs.lighthouse_desktop.outputs.links }}`)
-            console.log('Mobile links raw:', `${{ needs.lighthouse_mobile.outputs.links }}`)
-
-            // Links output is small enough to pass as job output (just a URL string)
-            const desktopLinksRaw = `${{ needs.lighthouse_desktop.outputs.links }}`
-            const mobileLinksRaw  = `${{ needs.lighthouse_mobile.outputs.links }}`
-
-            const parseReportUrl = (raw) => {
+            // Read the finalUrl from lhr-*.json — this is the actual audited page URL
+            // Strip bypass secret query param before displaying in PR comment
+            const readFinalUrl = (dir) => {
               try {
-                if (!raw || raw === 'null' || raw === '') return null
-                const parsed = JSON.parse(raw)
-                return parsed ? Object.values(parsed)[0] : null
-              } catch (e) {
-                console.log('Parse error:', e.message, 'raw:', raw)
-                return null
-              }
+                if (!fs.existsSync(dir)) return null
+                const files = fs.readdirSync(dir).filter(f => f.startsWith('lhr-') && f.endsWith('.json'))
+                if (!files.length) return null
+                const lhr = JSON.parse(fs.readFileSync(path.join(dir, files[files.length - 1]), 'utf8'))
+                const url = lhr.finalUrl || lhr.requestedUrl || null
+                return url ? url.split('?')[0] : null
+              } catch { return null }
             }
 
-            const desktopAuditedUrl = parseReportUrl(desktopLinksRaw)
-            const mobileAuditedUrl  = parseReportUrl(mobileLinksRaw)
+            const desktopAuditedUrl = readFinalUrl('./lighthouse-desktop')
+            const mobileAuditedUrl  = readFinalUrl('./lighthouse-mobile')
 
             const reportLinks = [
               desktopAuditedUrl ? `[Desktop report](${desktopAuditedUrl})` : '~~Desktop report~~ (failed)',
