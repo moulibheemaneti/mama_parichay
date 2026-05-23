@@ -1,0 +1,168 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+# Cancel in-progress runs on the same branch when a new commit is pushed
+# Saves CI minutes — no point finishing a stale run
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  # ─── Shared setup — install once, cache for all jobs ─────────────────────
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: node_modules
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lockb') }}
+          restore-keys: bun-${{ runner.os }}-
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: bun install --frozen-lockfile
+
+      - name: Generate Nuxt
+        run: bun nuxt prepare
+
+      - name: Cache .nuxt
+        uses: actions/cache@v4
+        with:
+          path: .nuxt
+          key: nuxt-${{ runner.os }}-${{ hashFiles('nuxt.config.ts') }}
+
+  # ─── Gate 1: Lint ────────────────────────────────────────────────────────
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lockb') }}
+
+      - name: Restore .nuxt cache
+        uses: actions/cache@v4
+        with:
+          path: .nuxt
+          key: nuxt-${{ runner.os }}-${{ hashFiles('nuxt.config.ts') }}
+
+      - name: Run ESLint
+        run: bun eslint .
+
+      - name: Run Stylelint
+        run: bun stylelint "**/*.scss"
+
+  # ─── Gate 2: Typecheck ───────────────────────────────────────────────────
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lockb') }}
+
+      - name: Restore .nuxt cache
+        uses: actions/cache@v4
+        with:
+          path: .nuxt
+          key: nuxt-${{ runner.os }}-${{ hashFiles('nuxt.config.ts') }}
+
+      - name: Run TypeScript typecheck
+        run: bun nuxt typecheck
+
+  # ─── Gate 3: Tests (placeholder — uncomment when Vitest is set up) ───────
+  # test:
+  #   name: Tests
+  #   runs-on: ubuntu-latest
+  #   needs: typecheck
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
+  #
+  #     - name: Restore dependencies cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: node_modules
+  #         key: bun-${{ runner.os }}-${{ hashFiles('bun.lockb') }}
+  #
+  #     - name: Restore .nuxt cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: .nuxt
+  #         key: nuxt-${{ runner.os }}-${{ hashFiles('nuxt.config.ts') }}
+  #
+  #     - name: Run tests
+  #       run: bun test:run
+
+  # ─── Gate 4: Build ───────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: typecheck     # swap to `needs: test` once tests are added
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lockb') }}
+
+      - name: Build Nuxt app
+        run: bun run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuxt-build
+          path: .output/
+          retention-days: 1
