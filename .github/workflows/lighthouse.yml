@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run Lighthouse audit — Desktop
         id: lighthouse
@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run Lighthouse audit — Mobile
         id: lighthouse
@@ -62,14 +62,14 @@ jobs:
 
     steps:
       - name: Download desktop artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         continue-on-error: true
         with:
           name: lighthouse-desktop
           path: ./lighthouse-desktop
 
       - name: Download mobile artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         continue-on-error: true
         with:
           name: lighthouse-mobile

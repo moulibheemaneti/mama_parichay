@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0      # semantic-release needs full git history to determine version
 
@@ -32,7 +32,7 @@ jobs:
           bun-version: latest
 
       - name: Restore dependencies cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: bun-${{ runner.os }}-${{ hashFiles('bun.lockb') }}
