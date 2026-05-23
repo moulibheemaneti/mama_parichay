@@ -59,4 +59,40 @@
       "editor.defaultFormatter": "Vue.volar",
       "editor.formatOnSave": true,
    },
+   // --- ESLint as the sole formatter (no Prettier) ---
+   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+   // --- ESLint flat config (required for Nuxt 4 / eslint v9) ---
+   "eslint.useFlatConfig": true,
+   // --- Per-language overrides ---
+   // SCSS: VS Code's built-in CSS formatter is fine for SCSS
+   "[scss]": {
+      "editor.defaultFormatter": "vscode.css-language-features"
+   },
+   // JSON: use VS Code built-in (ESLint doesn't format JSON)
+   "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+   },
+   "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+   },
+   // Markdown: no auto-format (prevents unwanted rewrapping)
+   "[markdown]": {
+      "editor.formatOnSave": false
+   },
+   // --- TypeScript ---
+   "typescript.tsdk": "node_modules/typescript/lib",
+   "typescript.enablePromptUseWorkspaceTsdk": true,
+   // --- Vue / Volar ---
+   "vue.inlayHints.missingProps": true,
+   "vue.autoInsert.dotValue": true,
+   // --- File nesting (keeps explorer clean) ---
+   "explorer.fileNesting.enabled": true,
+   "explorer.fileNesting.patterns": {
+      "nuxt.config.*": ".nuxtignore, .nuxtrc",
+      "package.json": "package-lock.json, bun.lockb, .npmrc, .nvmrc, .node-version",
+      "eslint.config.*": ".eslintignore",
+      ".editorconfig": ".vscode"
+   },
+   // --- Misc ---
+   "files.eol": "\n",
 }
