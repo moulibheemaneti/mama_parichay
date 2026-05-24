@@ -11,7 +11,9 @@
       "postinstall": "bun --bun nuxt prepare",
       "prepare": "husky",
       "lint": "eslint .; stylelint '**/*.scss'",
-      "lint:fix": "eslint . --fix; stylelint --fix '**/*.scss'"
+      "lint:fix": "eslint . --fix; stylelint --fix '**/*.scss'",
+      "clean": "rm -rf .nuxt .output dist",
+      "clean:all": "bun clean && rm -rf bun.lock"
    },
    "dependencies": {
       "@nuxt/eslint": "1.15.2",
