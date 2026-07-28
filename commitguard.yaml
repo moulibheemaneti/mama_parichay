@@ -7,8 +7,8 @@ pre-commit:
          run: bun eslint .
       stylelint:
          run: bun stylelint '**/*.scss'
-      typescript:
-         run: bun tsc --noEmit
+      typecheck:
+         run: bun typecheck
 
 commit-msg:
    commands:

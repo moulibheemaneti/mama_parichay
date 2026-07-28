@@ -13,7 +13,8 @@
       "lint": "bunx --bun eslint .; stylelint '**/*.scss'",
       "lint:fix": "bunx --bun eslint . --fix; stylelint --fix '**/*.scss'",
       "clean": "rm -rf .nuxt .output dist",
-      "clean:all": "bun clean && rm -rf bun.lock"
+      "clean:all": "bun clean && rm -rf bun.lock",
+      "typecheck": "vue-tsc --build --noEmit"
    },
    "dependencies": {
       "@nuxt/eslint": "1.16.0",

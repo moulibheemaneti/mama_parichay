@@ -106,7 +106,7 @@ jobs:
           key: nuxt-${{ runner.os }}-${{ hashFiles('nuxt.config.ts') }}
 
       - name: Run TypeScript typecheck
-        run: bun nuxt typecheck
+        run: bun typecheck
 
   # ─── Gate 3: Tests (placeholder — uncomment when Vitest is set up) ───────
   # test:
