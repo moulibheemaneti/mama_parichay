@@ -3,6 +3,7 @@ export default defineNuxtConfig({
 
    modules: [
       "@nuxt/eslint",
+      "@vercel/analytics",
    ],
    devtools: { enabled: true },
 
