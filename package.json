@@ -3,6 +3,7 @@
    "version": "0.0.1",
    "type": "module",
    "private": true,
+   "homepage": "https://www.mamaparichay.com",
    "scripts": {
       "build": "bun --bun nuxt build",
       "dev": "bun --bun nuxt dev",
