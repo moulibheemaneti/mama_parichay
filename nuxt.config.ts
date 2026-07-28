@@ -27,6 +27,10 @@ export default defineNuxtConfig({
    // YYYY-MM-DD
    compatibilityDate: "2026-05-23",
 
+   nitro: {
+      preset: "bun",
+   },
+
    eslint: {
       config: {
          stylistic: true,

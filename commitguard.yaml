@@ -1,0 +1,16 @@
+commitguard:
+  verbose: true
+
+pre-commit:
+   commands:
+      eslint:
+         run: bun eslint .
+      stylelint:
+         run: bun stylelint '**/*.scss'
+      typescript:
+         run: bun tsc --noEmit
+
+commit-msg:
+   commands:
+      conventional:
+         preset: conventional
