@@ -4,6 +4,7 @@ export default defineNuxtConfig({
    modules: [
       "@nuxt/eslint",
       "@vercel/analytics",
+      "@vercel/speed-insights",
    ],
    devtools: { enabled: true },
 
