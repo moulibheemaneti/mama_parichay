@@ -183,15 +183,14 @@
 
    // Try both string and number forms of the shade key
    $shade-str: $shade + "";
-   // $shade-num: 500;
+
+   // Declare in the outer scope first so the branch assignments below update
+   // this variable instead of shadowing it in the @if/@else block scope.
+   $shade-num: $shade;
 
    @if meta.type-of($shade) == "string" {
       $shade-num: str-to-number($shade);
-   } @else {
-      $shade-num: $shade;
    }
-
-   // $shade-num: if(meta.type-of($shade)=='string', str-to-number($shade), $shade);
 
    $has-str-key: map.has-key($color-entry, $shade-str);
    $has-num-key: map.has-key($color-entry, $shade-num);

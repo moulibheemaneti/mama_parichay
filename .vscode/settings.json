@@ -46,7 +46,9 @@
    "emmet.showAbbreviationSuggestions": true,
    "emmet.showExpandedAbbreviation": "always",
    // TypeScript Specific
-   "typescript.preferences.importModuleSpecifier": "relative",
+   "js/ts.tsdk.path": "node_modules/typescript/lib",
+   "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+   "js/ts.preferences.importModuleSpecifier": "relative",
    // ESLint Specific
    "eslint.run": "onSave",
    "eslint.validate": [
@@ -81,9 +83,6 @@
    "[markdown]": {
       "editor.formatOnSave": false
    },
-   // --- TypeScript ---
-   "typescript.tsdk": "node_modules/typescript/lib",
-   "typescript.enablePromptUseWorkspaceTsdk": true,
    // --- Vue / Volar ---
    "vue.inlayHints.missingProps": true,
    "vue.autoInsert.dotValue": true,
@@ -92,7 +91,7 @@
    "explorer.fileNesting.patterns": {
       "release.config.mjs": "lighthouserc.json, lighthouserc.*.json",
       "package.json": "bun.lock",
-      "nuxt.config.*": ".nuxtignore, .nuxtrc, tsconfig.json",
+      "nuxt.config.*": ".nuxtignore, .nuxtrc, tsconfig.json, vitest.config.ts",
       "eslint.config.*": ".eslintignore, stylelint.config.mjs, commitlint.config.ts",
       ".editorconfig": ".vscode",
       ".env.example": ".env, .env.dev, .env.stage, .env.prod",
