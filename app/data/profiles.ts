@@ -13,96 +13,96 @@
 import type { Profile } from "~/types/profile"
 
 export const profiles: Profile[] = [
-   {
-      slug: "yojana-bheemaneti",
-      fullName: "Yojana Bheemaneti",
-      gender: "Female",
-      photo: "/gallery/yojana-bheemaneti/yojana-in-casual-wear.png",
-      birth: {
-         date: "2003-10-29",
-         time: "15:55",
-         place: "L B Nagar, Hyderabad",
-      },
-      faith: {
-         religion: "Hindu",
-         caste: "Kamma",
-      },
-      horoscope: {
-         star: "Moola",
-         rasi: "Dhanasu",
-         gotram: "Lakkanti",
-      },
-      physical: {
-         heightCm: 162,
-         weightKg: 58,
-         complexion: "Fair",
-         bloodGroup: "B+",
-      },
-      education: {
-         qualification: "BA, B.Ed",
-         institution: "Osmania University, Hyderabad",
-      },
-      occupation: {
-         title: "Software Engineer",
-         employer: "GTET",
-         location: "Hyderabad",
-      },
-      family: [
-         {
-            relation: "Father",
-            person: {
-               fullName: "B. Bhaskara Naidu",
-               gender: "Male",
-               occupation: {
-                  title: "Asst Engr",
-                  employer: "Ministry of Defence, DGQA",
-               },
-            },
-         },
-         {
-            relation: "Mother",
-            person: {
-               fullName: "B. Bhuvaneswari",
-               gender: "Female",
-               occupation: { title: "Home maker" },
-            },
-         },
-         {
-            relation: "Elder Brother",
-            person: {
-               gender: "Male",
-               education: { qualification: "B.Tech (CSE)" },
-               occupation: {
-                  title: "Software Engineer",
-                  employer: "GTET",
-                  location: "Hyderabad",
-               },
-            },
-         },
-         {
-            relation: "Younger Brother",
-            person: {
-               gender: "Male",
-               education: { qualification: "Class XII" },
-            },
-         },
-      ],
-      seeking: "Seeking a life partner who values traditions, respects family and believes in growing together with love and trust.",
-      contact: {
-         relation: "Father",
-         phone: "9491677472",
-         addresses: [
-            "Qtr No. 3829, QDF Estate, Yeddumailaram, Sangareddy (Dist) - 502205 (TG)",
-            "Pavuluru Kandiga, SKR Puram (P O), Palasamudram (Mandal), Chittoor Dist (AP)",
-         ],
-      },
-      gallery: [
-         {
-            src: "/gallery/yojana-bheemaneti/yojana-in-casual-wear.png",
-            alt: "Yojana Bheemaneti in a pink floral kurta, leaning on a terrace railing with greenery behind",
-         },
-      ],
-   },
+   // {
+   //    slug: "yojana-bheemaneti",
+   //    fullName: "Yojana Bheemaneti",
+   //    gender: "Female",
+   //    photo: "/gallery/yojana-bheemaneti/yojana-in-casual-wear.png",
+   //    birth: {
+   //       date: "2003-10-29",
+   //       time: "15:55",
+   //       place: "L B Nagar, Hyderabad",
+   //    },
+   //    faith: {
+   //       religion: "Hindu",
+   //       caste: "Kamma",
+   //    },
+   //    horoscope: {
+   //       star: "Moola",
+   //       rasi: "Dhanasu",
+   //       gotram: "Lakkanti",
+   //    },
+   //    physical: {
+   //       heightCm: 162,
+   //       weightKg: 58,
+   //       complexion: "Fair",
+   //       bloodGroup: "B+",
+   //    },
+   //    education: {
+   //       qualification: "BA, B.Ed",
+   //       institution: "Osmania University, Hyderabad",
+   //    },
+   //    occupation: {
+   //       title: "Software Engineer",
+   //       employer: "GTET",
+   //       location: "Hyderabad",
+   //    },
+   //    family: [
+   //       {
+   //          relation: "Father",
+   //          person: {
+   //             fullName: "B. Bhaskara Naidu",
+   //             gender: "Male",
+   //             occupation: {
+   //                title: "Asst Engr",
+   //                employer: "Ministry of Defence, DGQA",
+   //             },
+   //          },
+   //       },
+   //       {
+   //          relation: "Mother",
+   //          person: {
+   //             fullName: "B. Bhuvaneswari",
+   //             gender: "Female",
+   //             occupation: { title: "Home maker" },
+   //          },
+   //       },
+   //       {
+   //          relation: "Elder Brother",
+   //          person: {
+   //             gender: "Male",
+   //             education: { qualification: "B.Tech (CSE)" },
+   //             occupation: {
+   //                title: "Software Engineer",
+   //                employer: "GTET",
+   //                location: "Hyderabad",
+   //             },
+   //          },
+   //       },
+   //       {
+   //          relation: "Younger Brother",
+   //          person: {
+   //             gender: "Male",
+   //             education: { qualification: "Class XII" },
+   //          },
+   //       },
+   //    ],
+   //    seeking: "Seeking a life partner who values traditions, respects family and believes in growing together with love and trust.",
+   //    contact: {
+   //       relation: "Father",
+   //       phone: "9491677472",
+   //       addresses: [
+   //          "Qtr No. 3829, QDF Estate, Yeddumailaram, Sangareddy (Dist) - 502205 (TG)",
+   //          "Pavuluru Kandiga, SKR Puram (P O), Palasamudram (Mandal), Chittoor Dist (AP)",
+   //       ],
+   //    },
+   //    gallery: [
+   //       {
+   //          src: "/gallery/yojana-bheemaneti/yojana-in-casual-wear.png",
+   //          alt: "Yojana Bheemaneti in a pink floral kurta, leaning on a terrace railing with greenery behind",
+   //       },
+   //    ],
+   // },
    {
       slug: "mouli-bheemaneti",
       fullName: "Mouli Bheemaneti",
