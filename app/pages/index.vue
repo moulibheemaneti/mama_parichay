@@ -1,19 +1,23 @@
 <template>
    <main class="home">
       <header class="home__header">
+         <span class="home__crest" aria-hidden="true">🪷</span>
          <h1 class="home__title">
             {{ t("home.heading") }}
          </h1>
          <p class="home__tagline">
             {{ t("home.tagline") }}
          </p>
+         <div class="flourish" aria-hidden="true" />
       </header>
 
       <ul class="cards" role="list">
          <li v-for="profile in profiles" :key="profile.slug" class="cards__item">
-            <NuxtLink class="card" :to="localePath(`/${profile.slug}`)"
+            <NuxtLink class="card ornate-frame" :to="localePath(`/${profile.slug}`)"
                :aria-label="`View ${profile.fullName}'s full profile`">
-               <ProfileAvatar :name="profile.fullName" :photo="profile.photo" size="md" />
+               <div class="card__portrait">
+                  <ProfileAvatar :name="profile.fullName" :photo="profile.photo" size="md" />
+               </div>
                <div class="card__body">
                   <h2 class="card__name">
                      {{ profile.fullName }}
@@ -61,47 +65,43 @@ useSchemaOrg([
 
 <style scoped lang="scss">
 .home {
-   min-block-size: 100dvh;
-   padding: clamp(2rem, 6vw, 4rem) 1.25rem;
-   background:
-      radial-gradient(circle at top, #fff6e6, transparent 60%),
-      #fdf6ec;
+   padding: clamp(2rem, 6vw, 4rem) 1.25rem clamp(3rem, 8vw, 5rem);
+   background: var(--page-glow), var(--cream);
 
    &__header {
       max-inline-size: 60rem;
       margin-inline: auto;
-      margin-block-end: 2.5rem;
+      margin-block-end: 1rem;
       text-align: center;
    }
 
-   &__title {
-      font-size: clamp(2rem, 5vw, 2.75rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #7a1220;
+   &__crest {
+      display: block;
+      font-size: 2rem;
+      line-height: 1;
+   }
 
-      &::after {
-         content: "";
-         display: block;
-         inline-size: 3.5rem;
-         block-size: 3px;
-         margin: 0.75rem auto 0;
-         background: linear-gradient(90deg, #e8a13a, #b0233a);
-         border-radius: 3px;
-      }
+   &__title {
+      margin-block-start: 0.75rem;
+      color: var(--maroon);
+      font-size: clamp(2.1rem, 5vw, 3.1rem);
+      font-weight: var(--weight-heading);
+      letter-spacing: 0.03em;
    }
 
    &__tagline {
-      margin-block-start: 0.75rem;
-      color: #8a6d52;
-      font-size: 1.05rem;
+      margin-block-start: 0.85rem;
+      color: var(--muted);
+      font-size: 1.18rem;
+      font-style: italic;
+      font-weight: var(--weight-strong);
    }
 }
 
 .cards {
    display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-   gap: 1.5rem;
+   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+   gap: 1.75rem;
    max-inline-size: 60rem;
    margin-inline: auto;
 }
@@ -110,55 +110,70 @@ useSchemaOrg([
    display: flex;
    flex-direction: column;
    align-items: center;
-   gap: 1rem;
+   gap: 0.9rem;
    block-size: 100%;
-   padding: 2rem 1.5rem;
+   padding: 2.25rem 1.5rem 1.75rem;
    text-align: center;
-   background: #fffdf8;
-   border: 1px solid #f0e0c6;
-   border-radius: 1.25rem;
-   box-shadow: 0 1px 2px rgb(122 18 32 / 5%);
-   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+   transition: transform 0.18s ease, box-shadow 0.18s ease;
 
    &:hover,
    &:focus-visible {
       transform: translateY(-4px);
-      border-color: #e0b45f;
-      box-shadow: 0 12px 28px rgb(122 18 32 / 12%);
+      box-shadow:
+         inset 0 0 0 4px var(--cream-card),
+         inset 0 0 0 5px rgb(185 138 62 / 55%),
+         0 14px 30px rgb(92 15 27 / 15%);
    }
 
    &:focus-visible {
-      outline: 2px solid #b0233a;
+      outline: 2px solid var(--kumkum);
       outline-offset: 3px;
+   }
+
+   // Gold ring around the portrait, matching the profile page.
+   &__portrait {
+      padding: 4px;
+      background: var(--gold-gradient);
+      border-radius: 50%;
+
+      :deep(.avatar) {
+         border: 3px solid var(--cream-card);
+      }
    }
 
    &__body {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.3rem;
    }
 
    &__name {
-      font-size: 1.35rem;
-      font-weight: 600;
-      color: #3d1e17;
+      color: var(--maroon);
+      font-size: 1.4rem;
+      font-weight: var(--weight-heading);
+      letter-spacing: 0.02em;
    }
 
    &__meta {
-      color: #6b4f3d;
-      font-size: 0.95rem;
+      color: var(--ink-soft);
+      font-size: 1.08rem;
+      font-weight: var(--weight-strong);
    }
 
    &__location {
-      color: #9a8067;
-      font-size: 0.875rem;
+      color: var(--muted);
+      font-size: 1rem;
    }
 
    &__cta {
       margin-block-start: auto;
-      color: #b0233a;
-      font-size: 0.9rem;
-      font-weight: 600;
+      padding-block-start: 0.9rem;
+      color: var(--kumkum);
+      font-family: var(--font-display);
+      font-size: 0.86rem;
+      font-weight: var(--weight-label);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
    }
 }
 </style>

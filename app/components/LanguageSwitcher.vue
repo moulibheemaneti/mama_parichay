@@ -46,8 +46,8 @@ function onChange(event: Event) {
       border: 1px solid #f0d9ad;
       border-radius: 999px;
       color: #7a1220;
-      font-size: 0.875rem;
-      font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: var(--weight-label);
       cursor: pointer;
       transition: border-color 0.18s ease, box-shadow 0.18s ease;
 

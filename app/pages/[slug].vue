@@ -4,9 +4,12 @@
          ← All profiles
       </NuxtLink>
 
-      <article class="profile__card">
+      <article class="profile__card ornate-frame">
          <header class="profile__header">
-            <ProfileAvatar :name="profile.fullName" :photo="profile.photo" size="lg" />
+            <span class="profile__crest" aria-hidden="true">🪷</span>
+            <div class="profile__portrait">
+               <ProfileAvatar :name="profile.fullName" :photo="profile.photo" size="lg" />
+            </div>
             <div class="profile__intro">
                <h1 class="profile__name">
                   {{ profile.fullName }}
@@ -20,11 +23,13 @@
             </div>
          </header>
 
+         <div class="flourish" aria-hidden="true" />
+
          <section class="profile__section">
-            <h2 class="profile__section-title">
+            <h2 class="banner">
                Personal Information
             </h2>
-            <dl class="details">
+            <dl class="details panel">
                <div v-for="detail in personalDetails" :key="detail.label" class="details__row">
                   <dt class="details__label">
                      {{ detail.label }}
@@ -36,11 +41,13 @@
             </dl>
          </section>
 
+         <div class="flourish" aria-hidden="true" />
+
          <section class="profile__section">
-            <h2 class="profile__section-title">
+            <h2 class="banner">
                Education &amp; Career
             </h2>
-            <dl class="details details--stacked">
+            <dl class="details details--stacked panel">
                <div class="details__row">
                   <dt class="details__label">
                      Education Qualification
@@ -60,11 +67,13 @@
             </dl>
          </section>
 
+         <div class="flourish" aria-hidden="true" />
+
          <section class="profile__section">
-            <h2 class="profile__section-title">
+            <h2 class="banner">
                Family Background
             </h2>
-            <dl class="details details--stacked">
+            <dl class="details details--stacked panel">
                <div v-for="member in profile.family" :key="member.relation" class="details__row">
                   <dt class="details__label">
                      {{ member.relation }}
@@ -84,17 +93,22 @@
             </dl>
          </section>
 
+         <div class="flourish" aria-hidden="true" />
+
          <section class="profile__section">
             <blockquote class="profile__seeking">
+               <span class="profile__seeking-mark" aria-hidden="true">॥ ✦ ॥</span>
                {{ profile.seeking }}
             </blockquote>
          </section>
 
+         <div class="flourish" aria-hidden="true" />
+
          <section class="profile__section">
-            <h2 class="profile__section-title">
+            <h2 class="banner">
                Contact Information
             </h2>
-            <dl class="details details--stacked">
+            <dl class="details details--stacked panel">
                <div class="details__row">
                   <dt class="details__label">
                      Contact
@@ -119,8 +133,10 @@
             </dl>
          </section>
 
+         <div v-if="profile.gallery.length" class="flourish" aria-hidden="true" />
+
          <section v-if="profile.gallery.length" class="profile__section">
-            <h2 class="profile__section-title">
+            <h2 class="banner">
                Photos
             </h2>
             <ProfileGallery :name="profile.fullName" :images="profile.gallery" />
@@ -211,141 +227,193 @@ useSchemaOrg([
 
 <style scoped lang="scss">
 .profile {
-   min-block-size: 100dvh;
-   padding: clamp(1.5rem, 5vw, 3rem) 1.25rem;
-   background:
-      radial-gradient(circle at top, #fff6e6, transparent 55%),
-      #fdf6ec;
+   padding: clamp(1.5rem, 5vw, 3rem) 1.25rem clamp(3rem, 8vw, 5rem);
+   background: var(--page-glow), var(--cream);
 
    &__back {
-      display: inline-block;
-      max-inline-size: 44rem;
+      display: block;
+      max-inline-size: 46rem;
       margin-inline: auto;
-      margin-block-end: 1.5rem;
-      color: #b0233a;
+      margin-block-end: 1.25rem;
+      color: var(--kumkum);
+      font-family: var(--font-display);
       font-size: 0.9rem;
-      font-weight: 600;
+      font-weight: var(--weight-label);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
 
       &:hover {
          text-decoration: underline;
+         text-underline-offset: 4px;
       }
 
       &:focus-visible {
-         outline: 2px solid #b0233a;
+         outline: 2px solid var(--kumkum);
          outline-offset: 3px;
          border-radius: 0.25rem;
       }
    }
 
    &__card {
-      max-inline-size: 44rem;
+      max-inline-size: 46rem;
       margin-inline: auto;
-      padding: clamp(1.5rem, 4vw, 2.5rem);
-      background: #fffdf8;
-      border: 1px solid #f0e0c6;
-      border-radius: 1.5rem;
-      box-shadow: 0 4px 20px rgb(122 18 32 / 7%);
+      padding: clamp(1.75rem, 5vw, 3rem) clamp(1.25rem, 4vw, 2.75rem);
    }
 
    &__header {
+      text-align: center;
+   }
+
+   // Lotus crest above the portrait, framed by a pair of gold rules.
+   &__crest {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 1.5rem;
-      padding-block-end: 1.75rem;
-      border-block-end: 1px solid #f2e4cd;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-block-end: 1rem;
+      font-size: 1.5rem;
+      line-height: 1;
+
+      &::before,
+      &::after {
+         content: "";
+         inline-size: clamp(2rem, 12vw, 5rem);
+         block-size: 1px;
+         background: var(--gold-gradient);
+      }
+   }
+
+   // Gold ring around the portrait, echoing the frame's double rule.
+   &__portrait {
+      display: inline-block;
+      padding: 5px;
+      background: var(--gold-gradient);
+      border-radius: 50%;
+      box-shadow: 0 6px 18px rgb(92 15 27 / 18%);
+
+      :deep(.avatar) {
+         border: 3px solid var(--cream-card);
+      }
    }
 
    &__name {
-      font-size: clamp(1.6rem, 4vw, 2.1rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #7a1220;
+      margin-block-start: 1rem;
+      color: var(--maroon);
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-weight: var(--weight-heading);
+      letter-spacing: 0.02em;
    }
 
    &__summary {
-      margin-block-start: 0.35rem;
-      color: #8a6d52;
+      margin-block-start: 0.5rem;
+      color: var(--muted);
+      font-size: 1.1rem;
    }
 
    &__role {
-      margin-block-start: 0.15rem;
-      color: #b0233a;
-      font-weight: 600;
+      margin-block-start: 0.2rem;
+      color: var(--kumkum);
+      font-size: 1.1rem;
+      font-weight: var(--weight-heading);
    }
 
    &__section {
-      margin-block-start: 1.75rem;
-   }
+      // The banner overlaps the panel below it, so the pill reads as a
+      // label pinned to the section rather than a floating heading.
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-   &__section-title {
-      margin-block-end: 0.75rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #b98a3e;
-   }
+      .banner {
+         position: relative;
+         z-index: 1;
+         margin-block-end: -1rem;
+      }
 
-   &__bio {
-      color: #5c4436;
-      line-height: 1.7;
+      > .panel,
+      > :deep(.gallery) {
+         inline-size: 100%;
+      }
+
+      > .panel {
+         padding-block-start: 1.9rem;
+      }
    }
 
    &__seeking {
-      margin: 0;
-      padding: 1.25rem 1.5rem;
-      background: #fbeed7;
-      border: 1px solid #f0d9ad;
+      max-inline-size: 34rem;
+      margin: 0 auto;
+      padding: clamp(1.25rem, 4vw, 1.75rem);
+      background: linear-gradient(180deg, rgb(251 238 215 / 80%), rgb(255 253 248 / 70%));
+      border: 1px solid var(--line-gold);
       border-radius: 1rem;
-      color: #7a1220;
+      color: var(--maroon);
+      font-size: 1.15rem;
       font-style: italic;
-      line-height: 1.7;
+      font-weight: var(--weight-strong);
+      line-height: 1.8;
       text-align: center;
+   }
+
+   &__seeking-mark {
+      display: block;
+      margin-block-end: 0.5rem;
+      color: var(--gold);
+      font-style: normal;
+      letter-spacing: 0.3em;
    }
 }
 
 .details {
    display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-   gap: 0.9rem 1.5rem;
+   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+   gap: 1rem 1.75rem;
 
    &--stacked {
       display: flex;
       flex-direction: column;
-      gap: 0.9rem;
    }
 
    &__row {
       display: flex;
       flex-direction: column;
-      gap: 0.15rem;
+      gap: 0.2rem;
+   }
+
+   // A dotted leader under each row, the way a printed biodata rules its
+   // lines. Omitted on the last row so the panel doesn't end on a rule.
+   &--stacked &__row:not(:last-child) {
+      padding-block-end: 0.85rem;
+      border-block-end: 1px dotted rgb(185 138 62 / 45%);
+      margin-block-end: 0.85rem;
    }
 
    &__label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
+      color: var(--gold-deep);
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: var(--weight-label);
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      color: #b98a3e;
    }
 
    &__value {
-      color: #3d2418;
-      font-weight: 500;
+      color: var(--ink);
+      font-size: 1.15rem;
+      font-weight: var(--weight-strong);
       line-height: 1.6;
    }
 
    &__link {
-      color: #b0233a;
-      font-weight: 600;
+      color: var(--kumkum);
+      font-weight: var(--weight-label);
 
       &:hover {
          text-decoration: underline;
       }
 
       &:focus-visible {
-         outline: 2px solid #b0233a;
+         outline: 2px solid var(--kumkum);
          outline-offset: 2px;
          border-radius: 0.2rem;
       }
@@ -353,14 +421,19 @@ useSchemaOrg([
 }
 
 .addresses {
-   margin: 0;
-   padding-inline-start: 1.2rem;
    display: flex;
    flex-direction: column;
-   gap: 0.35rem;
+   gap: 0.4rem;
+   margin: 0;
+   padding-inline-start: 1.2rem;
+   list-style: decimal;
 
    li {
       padding-inline-start: 0.25rem;
+
+      &::marker {
+         color: var(--gold);
+      }
    }
 }
 </style>

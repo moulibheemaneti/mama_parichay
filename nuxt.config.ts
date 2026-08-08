@@ -3,6 +3,7 @@ export default defineNuxtConfig({
 
    modules: [
       "@nuxt/eslint",
+      "@nuxt/fonts",
       "@nuxt/image",
       "@nuxtjs/seo",
       "@nuxtjs/i18n",
@@ -71,6 +72,17 @@ export default defineNuxtConfig({
       config: {
          stylistic: true,
       },
+   },
+
+   // Self-hosted (no runtime Google requests) festive typography:
+   // Cinzel for engraved, roman-capital display; EB Garamond for body copy.
+   // Heavier weights are provisioned deliberately: the primary readers are
+   // older family members, so body copy runs at 500-600 rather than 400.
+   fonts: {
+      families: [
+         { name: "Cinzel", provider: "google", weights: [500, 600, 700, 800] },
+         { name: "EB Garamond", provider: "google", weights: [500, 600, 700], styles: ["normal", "italic"] },
+      ],
    },
 
    // Multilingual (India-first). English at "/", other languages prefixed.

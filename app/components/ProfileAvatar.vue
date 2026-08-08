@@ -41,7 +41,7 @@ const initials = computed(() =>
    border-radius: 50%;
    background: linear-gradient(135deg, #f6b64b, #b0233a);
    color: #fff8ec;
-   font-weight: 600;
+   font-weight: var(--weight-heading);
    line-height: 1;
    user-select: none;
 

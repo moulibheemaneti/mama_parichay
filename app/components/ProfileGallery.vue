@@ -95,9 +95,12 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 .gallery {
    &__grid {
+      // `auto-fit` with a max track keeps thumbnails a sane size, and
+      // centring the tracks stops a single photo hugging the left edge.
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
-      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(7rem, 9rem));
+      justify-content: center;
+      gap: 0.9rem;
    }
 
    &__thumb {
@@ -105,27 +108,27 @@ onBeforeUnmount(() => {
       inline-size: 100%;
       aspect-ratio: 4 / 5;
       overflow: hidden;
-      border: 1px solid #f0e0c6;
+      padding: 3px;
+      background: var(--gold-gradient);
       border-radius: 0.9rem;
-      background: #fbeed7;
       cursor: pointer;
       transition: transform 0.18s ease, box-shadow 0.18s ease;
 
       &:hover,
       &:focus-visible {
          transform: translateY(-2px);
-         box-shadow: 0 8px 20px rgb(122 18 32 / 12%);
+         box-shadow: 0 8px 20px rgb(122 18 32 / 18%);
       }
 
       &:focus-visible {
-         outline: 2px solid #b0233a;
+         outline: 2px solid var(--kumkum);
          outline-offset: 2px;
       }
 
       &--empty {
          display: grid;
          place-items: center;
-         background: linear-gradient(135deg, #fbeed7, #f3dcc0);
+         background: linear-gradient(135deg, var(--cream-sink), #f3dcc0);
          cursor: default;
       }
    }
@@ -134,6 +137,8 @@ onBeforeUnmount(() => {
       inline-size: 100%;
       block-size: 100%;
       object-fit: cover;
+      // Sits inside the gold padding, so it needs its own inner radius.
+      border-radius: 0.7rem;
    }
 
    &__mark {

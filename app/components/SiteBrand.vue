@@ -17,10 +17,11 @@ const brand = computed(() => t("home.heading"))
    display: inline-flex;
    align-items: center;
    gap: 0.5rem;
-   color: #7a1220;
-   font-size: 1.15rem;
-   font-weight: 700;
-   letter-spacing: -0.01em;
+   color: var(--maroon);
+   font-family: var(--font-display);
+   font-size: 1.2rem;
+   font-weight: var(--weight-heading);
+   letter-spacing: 0.04em;
 
    &__mark {
       // The source PNG has generous transparent padding + glow around the
@@ -38,7 +39,7 @@ const brand = computed(() => t("home.heading"))
    }
 
    &:focus-visible {
-      outline: 2px solid #b0233a;
+      outline: 2px solid var(--kumkum);
       outline-offset: 3px;
       border-radius: 0.4rem;
    }
