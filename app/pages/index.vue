@@ -10,8 +10,8 @@
       </header>
 
       <ul class="cards" role="list">
-         <li v-for="profile in profiles" :key="profile.fullName" class="cards__item">
-            <NuxtLink class="card" :to="`/${toSlug(profile.fullName)}`"
+         <li v-for="profile in profiles" :key="profile.slug" class="cards__item">
+            <NuxtLink class="card" :to="localePath(`/${profile.slug}`)"
                :aria-label="`View ${profile.fullName}'s full profile`">
                <ProfileAvatar :name="profile.fullName" :photo="profile.photo" size="md" />
                <div class="card__body">
@@ -19,10 +19,10 @@
                      {{ profile.fullName }}
                   </h2>
                   <p class="card__meta">
-                     {{ profile.age }} · {{ profile.profession }}
+                     {{ formatOccupation(profile.occupation) }}
                   </p>
                   <p class="card__location">
-                     {{ profile.location }}
+                     {{ formatFaith(profile.faith) }} · {{ profile.birth.place }}
                   </p>
                </div>
                <span class="card__cta" aria-hidden="true">View profile →</span>
@@ -36,6 +36,7 @@
 import { profiles } from "~/data/profiles"
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 useAppSeo({
    title: t("seo.home.title"),

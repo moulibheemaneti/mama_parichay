@@ -20,7 +20,9 @@ function onChange(event: Event) {
    const code = (event.target as HTMLSelectElement).value as typeof locale.value
    const path = switchLocalePath(code)
    if (path) {
-      router.push(path)
+      // Replace the current entry instead of pushing so the language switch
+      // doesn't add to history — Back should leave the page, not undo the switch.
+      router.replace(path)
    }
 }
 </script>

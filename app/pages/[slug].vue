@@ -1,6 +1,6 @@
 <template>
    <main class="profile">
-      <NuxtLink class="profile__back" to="/">
+      <NuxtLink class="profile__back" :to="localePath('/')">
          ← All profiles
       </NuxtLink>
 
@@ -12,29 +12,20 @@
                   {{ profile.fullName }}
                </h1>
                <p class="profile__summary">
-                  {{ profile.age }} yrs · {{ profile.height }} · {{ profile.location }}
+                  {{ formatFaith(profile.faith) }} · {{ profile.birth.place }}
                </p>
                <p class="profile__role">
-                  {{ profile.profession }} at {{ profile.company }}
+                  {{ formatOccupation(profile.occupation) }}
                </p>
             </div>
          </header>
 
          <section class="profile__section">
             <h2 class="profile__section-title">
-               About
-            </h2>
-            <p class="profile__bio">
-               {{ profile.bio }}
-            </p>
-         </section>
-
-         <section class="profile__section">
-            <h2 class="profile__section-title">
-               Details
+               Personal Information
             </h2>
             <dl class="details">
-               <div v-for="detail in details" :key="detail.label" class="details__row">
+               <div v-for="detail in personalDetails" :key="detail.label" class="details__row">
                   <dt class="details__label">
                      {{ detail.label }}
                   </dt>
@@ -47,22 +38,85 @@
 
          <section class="profile__section">
             <h2 class="profile__section-title">
-               Family
+               Education &amp; Career
             </h2>
-            <p class="profile__bio">
-               {{ profile.family }}
-            </p>
+            <dl class="details details--stacked">
+               <div class="details__row">
+                  <dt class="details__label">
+                     Education Qualification
+                  </dt>
+                  <dd class="details__value">
+                     {{ formatEducation(profile.education) }}
+                  </dd>
+               </div>
+               <div class="details__row">
+                  <dt class="details__label">
+                     Career
+                  </dt>
+                  <dd class="details__value">
+                     {{ formatOccupation(profile.occupation) }}
+                  </dd>
+               </div>
+            </dl>
          </section>
 
          <section class="profile__section">
             <h2 class="profile__section-title">
-               Interests
+               Family Background
             </h2>
-            <ul class="chips" role="list">
-               <li v-for="interest in profile.interests" :key="interest" class="chips__item">
-                  {{ interest }}
-               </li>
-            </ul>
+            <dl class="details details--stacked">
+               <div v-for="member in profile.family" :key="member.relation" class="details__row">
+                  <dt class="details__label">
+                     {{ member.relation }}
+                  </dt>
+                  <dd class="details__value">
+                     {{ formatPerson(member.person) }}
+                  </dd>
+               </div>
+               <div class="details__row">
+                  <dt class="details__label">
+                     Siblings
+                  </dt>
+                  <dd class="details__value">
+                     {{ summariseSiblings(profile.family) }}
+                  </dd>
+               </div>
+            </dl>
+         </section>
+
+         <section class="profile__section">
+            <blockquote class="profile__seeking">
+               {{ profile.seeking }}
+            </blockquote>
+         </section>
+
+         <section class="profile__section">
+            <h2 class="profile__section-title">
+               Contact Information
+            </h2>
+            <dl class="details details--stacked">
+               <div class="details__row">
+                  <dt class="details__label">
+                     Contact
+                  </dt>
+                  <dd class="details__value">
+                     {{ formatContactName(profile.contact, profile.family) }} —
+                     <a class="details__link" :href="`tel:${profile.contact.phone}`">{{ profile.contact.phone }}</a>
+                  </dd>
+               </div>
+               <div class="details__row">
+                  <dt class="details__label">
+                     Address
+                  </dt>
+                  <dd class="details__value">
+                     <ol class="addresses">
+                        <li v-for="(address, index) in profile.contact.addresses" :key="index">
+                           {{ address }}
+                        </li>
+                     </ol>
+                  </dd>
+               </div>
+            </dl>
          </section>
 
          <section v-if="profile.gallery.length" class="profile__section">
@@ -81,6 +135,7 @@ import { getProfileBySlug } from "~/data/profiles"
 defineOptions({ name: "ProfileDetailPage" })
 
 const route = useRoute()
+const localePath = useLocalePath()
 const slug = computed(() => String(route.params.slug))
 
 const profile = getProfileBySlug(slug.value)
@@ -93,23 +148,22 @@ if (!profile) {
    })
 }
 
-const details = computed(() => [
-   { label: "Age", value: `${profile.age} years` },
-   { label: "Height", value: profile.height },
-   { label: "Location", value: profile.location },
-   { label: "Profession", value: `${profile.profession}, ${profile.company}` },
-   { label: "Education", value: profile.education },
-   { label: "Religion", value: profile.religion },
-   { label: "Community", value: profile.community },
-   { label: "Mother tongue", value: profile.motherTongue },
-   { label: "Diet", value: profile.diet },
-   { label: "Marital status", value: profile.maritalStatus },
+const personalDetails = computed(() => [
+   { label: "D.O.B.", value: formatBirth(profile.birth) },
+   { label: "Place of Birth", value: profile.birth.place },
+   { label: "Religion & Caste", value: formatFaith(profile.faith) },
+   { label: "Star & Rasi", value: formatHoroscope(profile.horoscope) },
+   { label: "Gotram", value: profile.horoscope.gotram },
+   { label: "Height", value: formatHeight(profile.physical.heightCm) },
+   { label: "Weight", value: formatWeight(profile.physical.weightKg) },
+   { label: "Complexion", value: profile.physical.complexion },
+   { label: "Blood Group", value: formatBloodGroup(profile.physical.bloodGroup) },
 ])
 
 const description = [
-   `${profile.fullName}, ${profile.age}`,
-   profile.profession,
-   profile.location,
+   profile.fullName,
+   formatFaith(profile.faith),
+   formatOccupation(profile.occupation),
 ].join(" · ")
 
 useAppSeo({
@@ -121,8 +175,11 @@ useAppSeo({
 // Absolute URLs for the gallery images so search engines can resolve them
 // (schema.org requires fully-qualified contentUrl values).
 const site = useSiteConfig()
-const galleryUrls = computed(() =>
-   profile.gallery.map((path) => `${site.url}${path}`),
+const galleryImages = computed(() =>
+   profile.gallery.map((image) => ({
+      url: `${site.url}${image.src}`,
+      alt: image.alt,
+   })),
 )
 
 // Structured data: model the biodata as a Person plus an ImageGallery so the
@@ -131,16 +188,22 @@ useSchemaOrg([
    defineWebPage(),
    definePerson({
       name: profile.fullName,
-      jobTitle: profile.profession,
-      image: [profile.photo, ...galleryUrls.value],
+      // schema.org expects the bare role here, not a sentence.
+      jobTitle: profile.occupation.title,
+      ...(profile.occupation.employer && {
+         worksFor: { "@type": "Organization", "name": profile.occupation.employer },
+      }),
+      image: [profile.photo, ...galleryImages.value.map((image) => image.url)],
    }),
    {
       "@type": "ImageGallery",
       "name": `${profile.fullName} — Photos`,
-      "associatedMedia": galleryUrls.value.map((url, index) => ({
+      // The authored alt text doubles as the caption search engines index.
+      "associatedMedia": galleryImages.value.map((image) => ({
          "@type": "ImageObject",
-         "contentUrl": url,
-         "name": `${profile.fullName} — photo ${index + 1}`,
+         "contentUrl": image.url,
+         "name": image.alt,
+         "caption": image.alt,
       })),
    },
 ])
@@ -228,12 +291,30 @@ useSchemaOrg([
       color: #5c4436;
       line-height: 1.7;
    }
+
+   &__seeking {
+      margin: 0;
+      padding: 1.25rem 1.5rem;
+      background: #fbeed7;
+      border: 1px solid #f0d9ad;
+      border-radius: 1rem;
+      color: #7a1220;
+      font-style: italic;
+      line-height: 1.7;
+      text-align: center;
+   }
 }
 
 .details {
    display: grid;
    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
    gap: 0.9rem 1.5rem;
+
+   &--stacked {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+   }
 
    &__row {
       display: flex;
@@ -252,22 +333,34 @@ useSchemaOrg([
    &__value {
       color: #3d2418;
       font-weight: 500;
+      line-height: 1.6;
+   }
+
+   &__link {
+      color: #b0233a;
+      font-weight: 600;
+
+      &:hover {
+         text-decoration: underline;
+      }
+
+      &:focus-visible {
+         outline: 2px solid #b0233a;
+         outline-offset: 2px;
+         border-radius: 0.2rem;
+      }
    }
 }
 
-.chips {
+.addresses {
+   margin: 0;
+   padding-inline-start: 1.2rem;
    display: flex;
-   flex-wrap: wrap;
-   gap: 0.6rem;
+   flex-direction: column;
+   gap: 0.35rem;
 
-   &__item {
-      padding: 0.4rem 0.9rem;
-      background: #fbeed7;
-      border: 1px solid #f0d9ad;
-      border-radius: 999px;
-      color: #9a5a12;
-      font-size: 0.875rem;
-      font-weight: 500;
+   li {
+      padding-inline-start: 0.25rem;
    }
 }
 </style>

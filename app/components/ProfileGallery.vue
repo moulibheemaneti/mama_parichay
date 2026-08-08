@@ -1,10 +1,10 @@
 <template>
    <div class="gallery">
       <ul class="gallery__grid" role="list">
-         <li v-for="(src, index) in images" :key="src">
+         <li v-for="(image, index) in images" :key="image.src">
             <button v-if="!failed.has(index)" type="button" class="gallery__thumb"
                :aria-label="`View photo ${index + 1} of ${name}`" @click="open(index)">
-               <img :src="src" :alt="altFor(src, index)" class="gallery__img" width="400" height="500" loading="lazy"
+               <img :src="image.src" :alt="image.alt" class="gallery__img" width="400" height="500" loading="lazy"
                   decoding="async" @error="failed.add(index)" />
             </button>
             <div v-else class="gallery__thumb gallery__thumb--empty" aria-hidden="true">
@@ -23,8 +23,7 @@
             @click="step(-1)">
             ‹
          </button>
-         <img :src="images[activeIndex] ?? ''" :alt="altFor(images[activeIndex] ?? '', activeIndex)"
-            class="lightbox__img" />
+         <img :src="images[activeIndex]?.src ?? ''" :alt="images[activeIndex]?.alt ?? ''" class="lightbox__img" />
          <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--next" aria-label="Next photo"
             @click="step(1)">
             ›
@@ -34,9 +33,13 @@
 </template>
 
 <script lang="ts" setup>
+import type { GalleryImage } from "~/types/profile"
+
+// `name` labels the controls ("View photo 2 of Yojana"); each image
+// carries its own authored alt text describing what is in the photo.
 const props = defineProps<{
    name: string
-   images: string[]
+   images: GalleryImage[]
 }>()
 
 const failed = reactive(new Set<number>())
@@ -45,32 +48,6 @@ const dialogEl = ref<HTMLElement | null>(null)
 const closeBtn = ref<HTMLButtonElement | null>(null)
 
 let lastFocused: HTMLElement | null = null
-
-/**
- * Build descriptive alt text from the SEO-friendly filename. Any leading token
- * that just repeats the person's name or initials is dropped, then the person's
- * full name is prefixed, so both "mb-in-traditional-wear.png" and
- * "yojana-in-casual-wear.png" become "<Full Name> — in traditional/casual wear".
- * Falls back to a numbered label when the filename carries no descriptor.
- */
-function altFor(src: string, index: number): string {
-   const file = src.split("/").pop()?.replace(/\.[^.]+$/, "") ?? ""
-   const tokens = file.split(/[-_]+/).filter(Boolean)
-
-   const nameParts = props.name.toLowerCase().split(/\s+/)
-   const firstName = nameParts[0] ?? ""
-   const initials = nameParts.map((part) => part.charAt(0)).join("")
-
-   while (tokens.length && [firstName, initials].includes(tokens[0]!.toLowerCase())) {
-      tokens.shift()
-   }
-
-   const descriptor = tokens.join(" ").trim()
-   if (!descriptor) {
-      return `${props.name} — photo ${index + 1}`
-   }
-   return `${props.name} — ${descriptor}`
-}
 
 function open(index: number) {
    lastFocused = document.activeElement as HTMLElement | null

@@ -3,86 +3,184 @@
 /// --------------------------------------------------
 /// Single, hardcoded source of truth for the demo matrimonial
 /// profiles. No backend/API — pages import from here directly.
-/// The `slug` is derived from the full name (e.g. "Rahul Sharma"
-/// → "rahul-sharma") and used for the dynamic `/[slug]` route.
+///
+/// Records only. The shapes they conform to live in `~/types/profile`,
+/// and anything derivable from them (sibling counts, imperial height,
+/// the contact's name) is computed at render time by `utils/format.ts`
+/// rather than duplicated here.
 /// --------------------------------------------------
 
-export interface Profile {
-   fullName: string
-   gender: "Male" | "Female"
-   age: number
-   /** City, State */
-   location: string
-   profession: string
-   company: string
-   education: string
-   religion: string
-   community: string
-   motherTongue: string
-   height: string
-   diet: "Vegetarian" | "Non-Vegetarian" | "Eggetarian" | "Vegan"
-   maritalStatus: string
-   /** Portrait URL. Falls back to initials if it fails to load. */
-   photo: string
-   bio: string
-   family: string
-   interests: string[]
-   /**
-    * Public-folder image paths for the profile gallery, served as-is for
-    * image SEO. Drop files into `public/gallery/<slug>/` and list them here
-    * (paths are relative to `public/`, so they start with `/gallery/...`).
-    */
-   gallery: string[]
-}
+import type { Profile } from "~/types/profile"
 
 export const profiles: Profile[] = [
    {
-      fullName: "Mouli Bheemaneti",
-      gender: "Male",
-      age: 29,
-      location: "Bengaluru, Karnataka",
-      profession: "Senior Software Engineer",
-      company: "Atlassian",
-      education: "B.Tech, Computer Science — IIT Bombay",
-      religion: "Hindu",
-      community: "Kamma",
-      motherTongue: "Telugu",
-      height: "5'11\" (180 cm)",
-      diet: "Vegetarian",
-      maritalStatus: "Never Married",
-      photo: "/gallery/mouli-bheemaneti/mb-in-traditional-wear.png",
-      bio: "An easy-going engineer who loves solving hard problems by day and cooking elaborate meals by night. I value honesty, curiosity and a good sense of humour. Looking for a kind, ambitious partner to share everyday adventures and build a warm home together.",
-      family: "Born into a close-knit family settled in Pune. Father is a retired bank manager, mother is a homemaker, and I have one younger sister who is pursuing her Master's.",
-      interests: ["Cooking", "Trekking", "Chess", "Classical music", "Photography"],
+      slug: "yojana-bheemaneti",
+      fullName: "Yojana Bheemaneti",
+      gender: "Female",
+      photo: "/gallery/yojana-bheemaneti/yojana-in-casual-wear.png",
+      birth: {
+         date: "2003-10-29",
+         time: "15:55",
+         place: "L B Nagar, Hyderabad",
+      },
+      faith: {
+         religion: "Hindu",
+         caste: "Kamma",
+      },
+      horoscope: {
+         star: "Moola",
+         rasi: "Dhanasu",
+         gotram: "Lakkanti",
+      },
+      physical: {
+         heightCm: 162,
+         weightKg: 58,
+         complexion: "Fair",
+         bloodGroup: "B+",
+      },
+      education: {
+         qualification: "BA, B.Ed",
+         institution: "Osmania University, Hyderabad",
+      },
+      occupation: {
+         title: "Software Engineer",
+         employer: "GTET",
+         location: "Hyderabad",
+      },
+      family: [
+         {
+            relation: "Father",
+            person: {
+               fullName: "B. Bhaskara Naidu",
+               gender: "Male",
+               occupation: {
+                  title: "Asst Engr",
+                  employer: "Ministry of Defence, DGQA",
+               },
+            },
+         },
+         {
+            relation: "Mother",
+            person: {
+               fullName: "B. Bhuvaneswari",
+               gender: "Female",
+               occupation: { title: "Home maker" },
+            },
+         },
+         {
+            relation: "Elder Brother",
+            person: {
+               gender: "Male",
+               education: { qualification: "B.Tech (CSE)" },
+               occupation: {
+                  title: "Software Engineer",
+                  employer: "GTET",
+                  location: "Hyderabad",
+               },
+            },
+         },
+         {
+            relation: "Younger Brother",
+            person: {
+               gender: "Male",
+               education: { qualification: "Class XII" },
+            },
+         },
+      ],
+      seeking: "Seeking a life partner who values traditions, respects family and believes in growing together with love and trust.",
+      contact: {
+         relation: "Father",
+         phone: "9491677472",
+         addresses: [
+            "Qtr No. 3829, QDF Estate, Yeddumailaram, Sangareddy (Dist) - 502205 (TG)",
+            "Pavuluru Kandiga, SKR Puram (P O), Palasamudram (Mandal), Chittoor Dist (AP)",
+         ],
+      },
       gallery: [
-         "/gallery/mouli-bheemaneti/mb-in-traditional-wear.png",
+         {
+            src: "/gallery/yojana-bheemaneti/yojana-in-casual-wear.png",
+            alt: "Yojana Bheemaneti in a pink floral kurta, leaning on a terrace railing with greenery behind",
+         },
       ],
    },
    {
-      fullName: "Yojana Bheemaneti",
-      gender: "Female",
-      age: 27,
-      location: "Hyderabad, Telangana",
-      profession: "Product Designer",
-      company: "Freshworks",
-      education: "M.Des, Interaction Design — NID Ahmedabad",
-      religion: "Hindu",
-      community: "Kamma",
-      motherTongue: "Telugu",
-      height: "5'5\" (165 cm)",
-      diet: "Vegetarian",
-      maritalStatus: "Never Married",
-      photo: "/gallery/yojana-bheemaneti/yojana-in-casual-wear.png",
-      bio: "A designer at heart who finds joy in small details, long conversations and weekend getaways. Independent and family-oriented in equal measure. I'm looking for a thoughtful, grounded partner who values mutual respect and shared growth.",
-      family: "From a supportive, forward-thinking family in Hyderabad. Father runs a small business, mother is a school teacher, and I have an elder brother who is married and settled in Chennai.",
-      interests: ["Painting", "Yoga", "Travel", "Reading", "Baking"],
+      slug: "mouli-bheemaneti",
+      fullName: "Mouli Bheemaneti",
+      gender: "Male",
+      photo: "/gallery/mouli-bheemaneti/mb-in-traditional-wear.png",
+      birth: {
+         date: "1996-06-12",
+         time: "09:20",
+         place: "Guntur, Andhra Pradesh",
+      },
+      faith: {
+         religion: "Hindu",
+         caste: "Kamma",
+      },
+      horoscope: {
+         star: "Rohini",
+         rasi: "Vrishabha",
+         gotram: "Lakkanti",
+      },
+      physical: {
+         heightCm: 180,
+         weightKg: 72,
+         complexion: "Fair",
+         bloodGroup: "O+",
+      },
+      education: {
+         qualification: "B.Tech, Computer Science",
+         institution: "IIT Bombay",
+      },
+      occupation: {
+         title: "Senior Software Engineer",
+         employer: "Atlassian",
+         location: "Bengaluru",
+      },
+      family: [
+         {
+            relation: "Father",
+            person: {
+               fullName: "B. Ramakrishna",
+               gender: "Male",
+               occupation: { title: "Retired Bank Manager" },
+            },
+         },
+         {
+            relation: "Mother",
+            person: {
+               fullName: "B. Saroja",
+               gender: "Female",
+               occupation: { title: "Home maker" },
+            },
+         },
+         {
+            relation: "Younger Sister",
+            person: {
+               gender: "Female",
+               education: { qualification: "Pursuing M.Sc" },
+               residence: "Hyderabad",
+            },
+         },
+      ],
+      seeking: "Seeking a kind, ambitious partner who values honesty, family and shared growth to build a warm home together.",
+      contact: {
+         relation: "Father",
+         phone: "9876543210",
+         addresses: [
+            "Flat 402, Sai Residency, Kothapet, Guntur - 522001 (AP)",
+         ],
+      },
       gallery: [
-         "/gallery/yojana-bheemaneti/yojana-in-casual-wear.png",
+         {
+            src: "/gallery/mouli-bheemaneti/mb-in-traditional-wear.png",
+            alt: "Mouli Bheemaneti in a cream kurta with a gold zari border, standing outdoors",
+         },
       ],
    },
 ]
 
-/** Look up a single profile by its derived slug. */
+/** Look up a single profile by its slug. */
 export function getProfileBySlug(slug: string): Profile | undefined {
-   return profiles.find((profile) => toSlug(profile.fullName) === slug)
+   return profiles.find((profile) => profile.slug === slug)
 }

@@ -90,6 +90,23 @@ export default defineNuxtConfig({
          { code: "kn", language: "kn-IN", name: "ಕನ್ನಡ", file: "kn.json" },
       ],
       // locale files resolve from <rootDir>/i18n/locales/*.json (v10 default)
+
+      // Treat the chosen language as a sticky preference stored in a cookie.
+      // `alwaysRedirect` + `redirectOn: "all"` enforce that preference on every
+      // navigation, so pressing Back to a URL carrying an older locale prefix
+      // (e.g. `/hi`) redirects to the preferred locale (e.g. `/te`). The cookie
+      // is updated by i18n whenever the locale is switched, so manual switches
+      // don't fight the redirect. Trade-off: opening a shared localized link
+      // (`/hi/...`) redirects to the viewer's saved language — sticky wins.
+      detectBrowserLanguage: {
+         useCookie: true,
+         cookieKey: "mp_locale",
+         alwaysRedirect: true,
+         redirectOn: "all",
+         // Don't infer from Accept-Language on the very first visit; honour the
+         // URL the user actually landed on until they pick a language.
+         fallbackLocale: "en",
+      },
    },
 
    // Dynamic Open Graph images. We use the Satori renderer (via the installed
