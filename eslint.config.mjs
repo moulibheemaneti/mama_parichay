@@ -169,14 +169,24 @@ export default withNuxt(
       },
    },
 
+   // ─── 6a. OG IMAGE COMPONENTS — names are dictated by nuxt-og-image ────────
+   // Files must be named <Name>.<renderer>.vue (e.g. Home.satori.vue), which
+   // the multi-word rule flags. The module owns this convention, so relax it.
+   {
+      files: ["**/components/OgImage/**/*.vue"],
+      rules: {
+         "vue/multi-word-component-names": "off",
+      },
+   },
+
    // ─── 6. NUXT OVERRIDES — relax certain rules for Nuxt-specific files ─────
    {
       files: [
          "nuxt.config.ts",
          "app.config.ts",
-         "server/**/*.ts",
-         "composables/**/*.ts",
-         "plugins/**/*.ts",
+         "**/server/**/*.ts",
+         "**/composables/**/*.ts",
+         "**/plugins/**/*.ts",
       ],
       rules: {
          // Server routes and config files often need `any` for flexibility
