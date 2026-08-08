@@ -10,6 +10,13 @@
 /// conflicts with component or layout-specific styles.
 /// --------------------------------------------------
 
+// Warm, auspicious base palette used across the app (cream background,
+// deep-brown text). Overrides the neutral defaults from base/_reset.scss.
+body {
+   background-color: #fdf6ec;
+   color: #3d2418;
+}
+
 // TODO: Add font family here.
 // *{
 // font-family: ;
