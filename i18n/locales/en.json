@@ -3,10 +3,23 @@
       "heading": "Mama Parichay",
       "tagline": "A beautiful biodata maker for auspicious alliances"
    },
+   "footer": {
+      "navLabel": "Footer",
+      "privacy": "Privacy Policy",
+      "copyright": "© {year} {brand}. All rights reserved."
+   },
+   "privacy": {
+      "heading": "Privacy Policy",
+      "updated": "Last updated: {date}"
+   },
    "seo": {
       "home": {
          "title": "Mama Parichay — Biodata Maker for Alliances",
          "description": "Create a beautiful marriage biodata in minutes with elegant templates. Simple, fast, and made for auspicious alliances."
+      },
+      "privacy": {
+         "title": "Privacy Policy — Mama Parichay",
+         "description": "How Mama Parichay collects, uses and protects the information you share when creating a marriage biodata."
       }
    }
 }

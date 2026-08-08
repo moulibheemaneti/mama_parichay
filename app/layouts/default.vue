@@ -5,6 +5,7 @@
          <LanguageSwitcher />
       </header>
       <slot />
+      <SiteFooter />
    </div>
 </template>
 
@@ -17,7 +18,18 @@ useHead(() => localeHead.value)
 
 <style scoped lang="scss">
 .app-shell {
+   // Column shell so the footer is pushed to the bottom of short pages
+   // instead of floating mid-viewport. The page's <main> takes the slack.
+   display: flex;
+   flex-direction: column;
+   min-block-size: 100dvh;
+
+   :deep(main) {
+      flex: 1;
+   }
+
    &__topbar {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -25,7 +37,18 @@ useHead(() => localeHead.value)
       padding: 1rem 1.25rem;
       // Sits above the page's full-bleed background without overlapping
       // centred page headings (previously fixed, which collided on mobile).
-      background: #fdf6ec;
+      background: var(--cream);
+
+      // Gold rule under the bar, tying the shell to the festive frames.
+      &::after {
+         content: "";
+         position: absolute;
+         inset-block-end: 0;
+         inset-inline: 0;
+         block-size: 2px;
+         background: var(--gold-gradient);
+         opacity: 0.7;
+      }
    }
 }
 </style>
