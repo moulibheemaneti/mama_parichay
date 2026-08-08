@@ -1,78 +1,32 @@
 <template>
    <div class="gallery">
-      <ul
-         class="gallery__grid"
-         role="list"
-      >
-         <li
-            v-for="(src, index) in images"
-            :key="src"
-         >
-            <button
-               v-if="!failed.has(index)"
-               type="button"
-               class="gallery__thumb"
-               :aria-label="`View photo ${index + 1} of ${name}`"
-               @click="open(index)"
-            >
-               <img
-                  :src="src"
-                  :alt="altFor(src, index)"
-                  class="gallery__img"
-                  width="400"
-                  height="500"
-                  loading="lazy"
-                  decoding="async"
-                  @error="failed.add(index)"
-               />
+      <ul class="gallery__grid" role="list">
+         <li v-for="(src, index) in images" :key="src">
+            <button v-if="!failed.has(index)" type="button" class="gallery__thumb"
+               :aria-label="`View photo ${index + 1} of ${name}`" @click="open(index)">
+               <img :src="src" :alt="altFor(src, index)" class="gallery__img" width="400" height="500" loading="lazy"
+                  decoding="async" @error="failed.add(index)" />
             </button>
-            <div
-               v-else
-               class="gallery__thumb gallery__thumb--empty"
-               aria-hidden="true"
-            >
+            <div v-else class="gallery__thumb gallery__thumb--empty" aria-hidden="true">
                <span class="gallery__mark">🪷</span>
             </div>
          </li>
       </ul>
 
-      <div
-         v-if="activeIndex !== null"
-         ref="dialogEl"
-         class="lightbox"
-         role="dialog"
-         aria-modal="true"
-         :aria-label="`Photo ${activeIndex + 1} of ${name}`"
-         @click.self="close"
-      >
-         <button
-            ref="closeBtn"
-            type="button"
-            class="lightbox__btn lightbox__close"
-            aria-label="Close gallery"
-            @click="close"
-         >
+      <div v-if="activeIndex !== null" ref="dialogEl" class="lightbox" role="dialog" aria-modal="true"
+         :aria-label="`Photo ${activeIndex + 1} of ${name}`" @click.self="close">
+         <button ref="closeBtn" type="button" class="lightbox__btn lightbox__close" aria-label="Close gallery"
+            @click="close">
             ✕
          </button>
-         <button
-            type="button"
-            class="lightbox__btn lightbox__nav lightbox__nav--prev"
-            aria-label="Previous photo"
-            @click="step(-1)"
-         >
+         <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--prev" aria-label="Previous photo"
+            @click="step(-1)">
             ‹
          </button>
-         <img
-            :src="images[activeIndex] ?? ''"
-            :alt="altFor(images[activeIndex] ?? '', activeIndex)"
-            class="lightbox__img"
-         />
-         <button
-            type="button"
-            class="lightbox__btn lightbox__nav lightbox__nav--next"
-            aria-label="Next photo"
-            @click="step(1)"
-         >
+         <img :src="images[activeIndex] ?? ''" :alt="altFor(images[activeIndex] ?? '', activeIndex)"
+            class="lightbox__img" />
+         <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--next" aria-label="Next photo"
+            @click="step(1)">
             ›
          </button>
       </div>

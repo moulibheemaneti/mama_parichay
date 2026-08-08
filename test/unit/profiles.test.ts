@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { getProfileBySlug, profiles, toSlug } from "../../app/data/profiles"
+import { getProfileBySlug, profiles } from "../../app/data/profiles"
+import { toSlug } from "../../app/utils/index"
 
 describe("toSlug", () => {
    it("lowercases and hyphenates a full name", () => {

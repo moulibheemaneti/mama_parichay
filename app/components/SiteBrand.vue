@@ -1,17 +1,6 @@
 <template>
-   <NuxtLink
-      class="brand"
-      :to="localePath('/')"
-      :aria-label="`${brand} — home`"
-   >
-      <img
-         src="/og-logo.png"
-         alt=""
-         class="brand__mark"
-         width="40"
-         height="40"
-         aria-hidden="true"
-      />
+   <NuxtLink class="brand" :to="localePath('/')" :aria-label="`${brand} — home`">
+      <img src="/og-logo.png" alt="" class="brand__mark" width="40" height="40" aria-hidden="true" />
       <span class="brand__name">{{ brand }}</span>
    </NuxtLink>
 </template>

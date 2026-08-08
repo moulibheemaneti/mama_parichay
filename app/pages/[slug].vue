@@ -1,19 +1,12 @@
 <template>
    <main class="profile">
-      <NuxtLink
-         class="profile__back"
-         to="/"
-      >
+      <NuxtLink class="profile__back" to="/">
          ← All profiles
       </NuxtLink>
 
       <article class="profile__card">
          <header class="profile__header">
-            <ProfileAvatar
-               :name="profile.fullName"
-               :photo="profile.photo"
-               size="lg"
-            />
+            <ProfileAvatar :name="profile.fullName" :photo="profile.photo" size="lg" />
             <div class="profile__intro">
                <h1 class="profile__name">
                   {{ profile.fullName }}
@@ -41,11 +34,7 @@
                Details
             </h2>
             <dl class="details">
-               <div
-                  v-for="detail in details"
-                  :key="detail.label"
-                  class="details__row"
-               >
+               <div v-for="detail in details" :key="detail.label" class="details__row">
                   <dt class="details__label">
                      {{ detail.label }}
                   </dt>
@@ -69,31 +58,18 @@
             <h2 class="profile__section-title">
                Interests
             </h2>
-            <ul
-               class="chips"
-               role="list"
-            >
-               <li
-                  v-for="interest in profile.interests"
-                  :key="interest"
-                  class="chips__item"
-               >
+            <ul class="chips" role="list">
+               <li v-for="interest in profile.interests" :key="interest" class="chips__item">
                   {{ interest }}
                </li>
             </ul>
          </section>
 
-         <section
-            v-if="profile.gallery.length"
-            class="profile__section"
-         >
+         <section v-if="profile.gallery.length" class="profile__section">
             <h2 class="profile__section-title">
                Photos
             </h2>
-            <ProfileGallery
-               :name="profile.fullName"
-               :images="profile.gallery"
-            />
+            <ProfileGallery :name="profile.fullName" :images="profile.gallery" />
          </section>
       </article>
    </main>

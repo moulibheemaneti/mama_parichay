@@ -1,24 +1,8 @@
 <template>
-   <div
-      class="avatar"
-      :class="`avatar--${size}`"
-      role="img"
-      :aria-label="`Photo of ${name}`"
-   >
-      <img
-         v-if="photo && !failed"
-         :src="photo"
-         :alt="`Photo of ${name}`"
-         class="avatar__img"
-         loading="lazy"
-         decoding="async"
-         @error="failed = true"
-      />
-      <span
-         v-else
-         class="avatar__initials"
-         aria-hidden="true"
-      >{{ initials }}</span>
+   <div class="avatar" :class="`avatar--${size}`" role="img" :aria-label="`Photo of ${name}`">
+      <img v-if="photo && !failed" :src="photo" :alt="`Photo of ${name}`" class="avatar__img" loading="lazy"
+         decoding="async" @error="failed = true" />
+      <span v-else class="avatar__initials" aria-hidden="true">{{ initials }}</span>
    </div>
 </template>
 

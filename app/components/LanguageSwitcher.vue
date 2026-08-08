@@ -1,20 +1,8 @@
 <template>
    <div class="lang">
-      <span
-         class="lang__icon"
-         aria-hidden="true"
-      >🌐</span>
-      <select
-         class="lang__select"
-         :value="locale"
-         aria-label="Select language"
-         @change="onChange"
-      >
-         <option
-            v-for="option in locales"
-            :key="option.code"
-            :value="option.code"
-         >
+      <span class="lang__icon" aria-hidden="true">🌐</span>
+      <select class="lang__select" :value="locale" aria-label="Select language" @change="onChange">
+         <option v-for="option in locales" :key="option.code" :value="option.code">
             {{ option.name }}
          </option>
       </select>

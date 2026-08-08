@@ -35,15 +35,6 @@ export interface Profile {
    gallery: string[]
 }
 
-/** Convert a full name into a URL-safe, hyphenated slug. */
-export function toSlug(fullName: string): string {
-   return fullName
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-}
-
 export const profiles: Profile[] = [
    {
       fullName: "Mouli Bheemaneti",

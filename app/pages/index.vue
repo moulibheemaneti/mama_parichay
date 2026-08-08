@@ -9,25 +9,11 @@
          </p>
       </header>
 
-      <ul
-         class="cards"
-         role="list"
-      >
-         <li
-            v-for="profile in profiles"
-            :key="profile.fullName"
-            class="cards__item"
-         >
-            <NuxtLink
-               class="card"
-               :to="`/${toSlug(profile.fullName)}`"
-               :aria-label="`View ${profile.fullName}'s full profile`"
-            >
-               <ProfileAvatar
-                  :name="profile.fullName"
-                  :photo="profile.photo"
-                  size="md"
-               />
+      <ul class="cards" role="list">
+         <li v-for="profile in profiles" :key="profile.fullName" class="cards__item">
+            <NuxtLink class="card" :to="`/${toSlug(profile.fullName)}`"
+               :aria-label="`View ${profile.fullName}'s full profile`">
+               <ProfileAvatar :name="profile.fullName" :photo="profile.photo" size="md" />
                <div class="card__body">
                   <h2 class="card__name">
                      {{ profile.fullName }}
@@ -39,10 +25,7 @@
                      {{ profile.location }}
                   </p>
                </div>
-               <span
-                  class="card__cta"
-                  aria-hidden="true"
-               >View profile →</span>
+               <span class="card__cta" aria-hidden="true">View profile →</span>
             </NuxtLink>
          </li>
       </ul>
@@ -50,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { profiles, toSlug } from "~/data/profiles"
+import { profiles } from "~/data/profiles"
 
 const { t } = useI18n()
 
