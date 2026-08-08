@@ -31,8 +31,12 @@ jobs:
         id: cache
         with:
           path: node_modules
+          # Exact-match only. A `restore-keys` prefix fallback would restore a
+          # stale node_modules from a previous lockfile; layering a frozen
+          # install on top leaves a half-consistent tree that crashes the
+          # `nuxt prepare` postinstall. On a lockfile change we want a clean
+          # install instead.
           key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
-          restore-keys: bun-${{ runner.os }}-
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
