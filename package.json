@@ -16,6 +16,8 @@
       "clean": "rm -rf .nuxt .output dist",
       "clean:all": "bun clean && rm -rf bun.lock",
       "typecheck": "vue-tsc --build --noEmit",
+      "seo:verify": "bash scripts/seo/verify.sh",
+      "seo:lighthouse": "bash scripts/seo/lighthouse.sh",
       "test": "bunx --bun vitest run",
       "test:watch": "bunx --bun vitest"
    },
@@ -30,7 +32,11 @@
    },
    "devDependencies": {
       "@moulibheemaneti/commitguard": "^0.1.4",
+      "@nuxt/image": "^2.1.0",
       "@nuxt/test-utils": "^4.1.0",
+      "@nuxtjs/i18n": "^10.6.0",
+      "@nuxtjs/seo": "^5.3.10",
+      "@resvg/resvg-js": "^2.6.2",
       "@semantic-release/changelog": "^7.0.0",
       "@semantic-release/commit-analyzer": "^13.0.1",
       "@semantic-release/git": "^11.0.1",
@@ -44,6 +50,7 @@
       "sass": "^1.102.0",
       "sass-embedded": "^1.100.0",
       "sass-true": "^10.1.0",
+      "satori": "^0.29.0",
       "semantic-release": "^25.0.9",
       "stylelint": "^17.14.1",
       "stylelint-config-standard": "^40.0.0",
