@@ -6,6 +6,9 @@
 .cache
 dist
 
+# Vercel build output (`.vercel/output`) + local project link
+.vercel
+
 # Lighthouse CI reports
 .lighthouseci
 
