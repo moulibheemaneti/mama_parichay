@@ -3,6 +3,16 @@
 All notable changes to this project will be documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.0](https://github.com/moulibheemaneti/mama_parichay/compare/v1.2.0...v1.3.0) (2026-08-09)
+
+### ✨ Features
+
+* **error:** add a branded error page in every language ([ee27499](https://github.com/moulibheemaneti/mama_parichay/commit/ee274991539bf56699af7bc90c9945082b60f336))
+
+### 🐛 Bug Fixes
+
+* **profiles:** raise the unknown-slug 404 from middleware ([fef9835](https://github.com/moulibheemaneti/mama_parichay/commit/fef98357f0a3e6f1e9a3421a1d78916a41fc3c5e))
+
 ## [1.2.0](https://github.com/moulibheemaneti/mama_parichay/compare/v1.1.2...v1.2.0) (2026-08-09)
 
 ### ✨ Features
