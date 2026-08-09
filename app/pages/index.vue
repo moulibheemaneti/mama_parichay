@@ -47,6 +47,12 @@ useAppSeo({
    description: t("seo.home.description"),
 })
 
+// The home title already leads with the brand, and nuxt-seo-utils appends
+// the site name by default — which rendered "Mama Parichay — Biodata Maker
+// for Alliances | Mama Parichay". Drop the suffix here only: leading with
+// the brand is what we want the branded search result to show.
+useHead({ titleTemplate: "%s" })
+
 defineOgImage("Home", {
    title: t("home.heading"),
    subtitle: t("home.tagline"),
