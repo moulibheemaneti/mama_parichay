@@ -69,6 +69,12 @@ export default withNuxt(
       rules: {
          "vue/html-indent": "off",
 
+         "vue/max-attributes-per-line": "off",
+
+         "vue/first-attribute-linebreak": "off",
+
+         "vue/html-closing-bracket-newline": "off",
+
          // Enforce <script setup> — the Composition API standard in Nuxt 4
          "vue/component-api-style": ["error", ["script-setup"]],
 
@@ -165,7 +171,7 @@ export default withNuxt(
          "@stylistic/arrow-parens": ["error", "always"], // (x) => not x =>
          "@stylistic/object-curly-spacing": ["error", "always"],
          "@stylistic/space-before-function-paren": ["error", "never"],
-         "@stylistic/max-len": ["warn", { code: 100, ignoreUrls: true, ignoreStrings: true }],
+         // "@stylistic/max-len": ["warn", { code: 100, ignoreUrls: true, ignoreStrings: true }],
       },
    },
 

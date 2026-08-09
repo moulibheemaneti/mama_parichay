@@ -3,10 +3,73 @@
       "heading": "मामा परिचय",
       "tagline": "शुभ विवाह संबंधों के लिए एक सुंदर बायोडाटा निर्माता"
    },
+   "footer": {
+      "navLabel": "फुटर",
+      "privacy": "गोपनीयता नीति",
+      "copyright": "© {year} {brand}. सर्वाधिकार सुरक्षित।"
+   },
+   "privacy": {
+      "heading": "गोपनीयता नीति",
+      "updated": "अंतिम अद्यतन: {date}"
+   },
+   "profile": {
+      "back": "सभी बायोडाटा",
+      "sections": {
+         "personal": "व्यक्तिगत जानकारी",
+         "career": "शिक्षा एवं करियर",
+         "family": "पारिवारिक पृष्ठभूमि",
+         "contact": "संपर्क जानकारी",
+         "photos": "तस्वीरें"
+      },
+      "fields": {
+         "dob": "जन्म तिथि",
+         "birthPlace": "जन्म स्थान",
+         "faith": "धर्म एवं जाति",
+         "horoscope": "नक्षत्र एवं राशि",
+         "gotram": "गोत्र",
+         "height": "कद",
+         "weight": "वज़न",
+         "complexion": "रंग",
+         "bloodGroup": "रक्त समूह",
+         "education": "शैक्षणिक योग्यता",
+         "career": "करियर",
+         "siblings": "भाई-बहन",
+         "contact": "संपर्क",
+         "address": "पता"
+      },
+      "relations": {
+         "father": "पिता",
+         "mother": "माता",
+         "elder-brother": "बड़े भाई",
+         "younger-brother": "छोटे भाई",
+         "elder-sister": "बड़ी बहन",
+         "younger-sister": "छोटी बहन"
+      },
+      "siblings": {
+         "brothers": "{count} भाई | {count} भाई",
+         "sisters": "{count} बहन | {count} बहनें",
+         "none": "कोई नहीं"
+      },
+      "gallery": {
+         "view": "{name} की तस्वीर {index} देखें",
+         "photo": "{name} की तस्वीर {index}",
+         "close": "गैलरी बंद करें",
+         "previous": "पिछली तस्वीर",
+         "next": "अगली तस्वीर"
+      }
+   },
    "seo": {
       "home": {
          "title": "मामा परिचय — विवाह बायोडाटा निर्माता",
          "description": "सुंदर टेम्पलेट्स के साथ मिनटों में विवाह बायोडाटा बनाएं। सरल, तेज़ और शुभ संबंधों के लिए बनाया गया।"
+      },
+      "privacy": {
+         "title": "गोपनीयता नीति",
+         "description": "विवाह बायोडाटा बनाते समय आपके द्वारा साझा की गई जानकारी को मामा परिचय कैसे एकत्र, उपयोग और सुरक्षित करता है।"
+      },
+      "profile": {
+         "title": "{name} — विवाह बायोडाटा",
+         "description": "{name}, {place} से {occupation}। {faith} विवाह बायोडाटा — परिवार, शिक्षा और कुंडली विवरण सहित।"
       }
    }
 }

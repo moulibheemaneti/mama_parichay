@@ -134,6 +134,56 @@ else
    fi
 fi
 
+# ── profile pages ────────────────────────────────────────────────────────────
+# Every biodata is checked, not a sampled one: the slugs come from the data
+# file itself (commented-out records start with `//`, so they are skipped),
+# which means adding a profile automatically widens this run.
+section "profile pages"
+SLUGS="$(grep -oE '^[[:space:]]*slug: "[^"]+"' app/data/profiles.ts \
+   | sed -E 's/.*slug: "([^"]+)".*/\1/')"
+
+if [[ -z "$SLUGS" ]]; then
+   fail "profiles found in app/data/profiles.ts" "no uncommented slug: entries"
+fi
+
+for slug in $SLUGS; do
+   printf "\n  ${C}/%s${X}\n" "$slug"
+   HTML="$(curl -s "$BASE/$slug")"
+
+   assert_contains "has <title>"        "$HTML" "<title>[^<]+</title>"
+   assert_contains "meta description"   "$HTML" "name=\"description\" content=\"[^\"]{20,}\""
+   assert_contains "canonical is self"  "$HTML" "rel=\"canonical\" href=\"https?://[^\"]*/${slug}\""
+   assert_contains "og:title"           "$HTML" "property=\"og:title\""
+   assert_contains "og:type article"    "$HTML" "property=\"og:type\" content=\"article\""
+   assert_contains "Person JSON-LD"     "$HTML" "\"@type\": ?\"Person\""
+   assert_contains "hreflang alternates" "$HTML" "hreflang=\"te-IN\""
+   assert_contains "listed in sitemap"  "$SITEMAP_EN" "<loc>[^<]*/${slug}</loc>"
+   assert_contains "photos in sitemap"  "$SITEMAP_EN" "image:image"
+
+   # The per-profile OG card must actually render, not just be linked.
+   PROFILE_OG="$(grep -oiE 'property="og:image" content="[^"]*"' <<<"$HTML" \
+      | sed -E 's/.*content="([^"]*)".*/\1/' | sed -E 's#^https?://[^/]+##' | head -1)"
+   if [[ -z "$PROFILE_OG" ]]; then
+      fail "og:image URL found" "no og:image meta tag"
+   else
+      read -r CODE TYPE SIZE < <(curl -s -o /dev/null -w "%{http_code} %{content_type} %{size_download}" "$BASE$PROFILE_OG")
+      if [[ "$CODE" == "200" && "$TYPE" == image/png* && "${SIZE:-0}" -gt 1000 ]]; then
+         pass "OG card renders PNG (${SIZE} bytes)"
+      else
+         fail "OG card renders PNG" "code=$CODE type=$TYPE size=${SIZE:-0}"
+      fi
+   fi
+
+   # Localized variants must differ from the English page, or the six
+   # hreflang alternates are duplicate content.
+   TE_HTML="$(curl -s "$BASE/te/$slug")"
+   assert_contains "/te html lang"      "$TE_HTML" "<html[^>]*lang=\"te-IN\""
+   assert_contains "/te labels localized" "$TE_HTML" "వ్యక్తిగత సమాచారం"
+   # "నుండి" ("from") sits early in the Telugu template, so this holds even
+   # when a long role pushes the tail of the sentence past the 155-char clip.
+   assert_contains "/te meta localized"  "$TE_HTML" "name=\"description\" content=\"[^\"]*నుండి"
+done
+
 # ── summary ──────────────────────────────────────────────────────────────────
 printf "\n${B}Summary${X}  ${G}%d passed${X}  ${R}%d failed${X}\n" "$PASS" "$FAIL"
 exit "$FAIL"

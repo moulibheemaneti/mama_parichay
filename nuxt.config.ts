@@ -3,6 +3,7 @@ export default defineNuxtConfig({
 
    modules: [
       "@nuxt/eslint",
+      "@nuxt/fonts",
       "@nuxt/image",
       "@nuxtjs/seo",
       "@nuxtjs/i18n",
@@ -73,6 +74,17 @@ export default defineNuxtConfig({
       },
    },
 
+   // Self-hosted (no runtime Google requests) festive typography:
+   // Cinzel for engraved, roman-capital display; EB Garamond for body copy.
+   // Heavier weights are provisioned deliberately: the primary readers are
+   // older family members, so body copy runs at 500-600 rather than 400.
+   fonts: {
+      families: [
+         { name: "Cinzel", provider: "google", weights: [500, 600, 700, 800] },
+         { name: "EB Garamond", provider: "google", weights: [500, 600, 700], styles: ["normal", "italic"] },
+      ],
+   },
+
    // Multilingual (India-first). English at "/", other languages prefixed.
    // `language` is a BCP-47 tag used for hreflang alternates in the sitemap.
    i18n: {
@@ -90,6 +102,23 @@ export default defineNuxtConfig({
          { code: "kn", language: "kn-IN", name: "ಕನ್ನಡ", file: "kn.json" },
       ],
       // locale files resolve from <rootDir>/i18n/locales/*.json (v10 default)
+
+      // Treat the chosen language as a sticky preference stored in a cookie.
+      // `alwaysRedirect` + `redirectOn: "all"` enforce that preference on every
+      // navigation, so pressing Back to a URL carrying an older locale prefix
+      // (e.g. `/hi`) redirects to the preferred locale (e.g. `/te`). The cookie
+      // is updated by i18n whenever the locale is switched, so manual switches
+      // don't fight the redirect. Trade-off: opening a shared localized link
+      // (`/hi/...`) redirects to the viewer's saved language — sticky wins.
+      detectBrowserLanguage: {
+         useCookie: true,
+         cookieKey: "mp_locale",
+         alwaysRedirect: true,
+         redirectOn: "all",
+         // Don't infer from Accept-Language on the very first visit; honour the
+         // URL the user actually landed on until they pick a language.
+         fallbackLocale: "en",
+      },
    },
 
    // Dynamic Open Graph images. We use the Satori renderer (via the installed
@@ -111,5 +140,12 @@ export default defineNuxtConfig({
          url: "https://www.mamaparichay.com",
          logo: "https://www.mamaparichay.com/og-logo.png",
       },
+   },
+
+   // The profile pages are dynamic SSR routes, so they are not
+   // auto-discovered. `server/api/__sitemap__/urls.ts` generates them from
+   // `data/profiles.ts` — see that file for why.
+   sitemap: {
+      sources: ["/api/__sitemap__/urls"],
    },
 })

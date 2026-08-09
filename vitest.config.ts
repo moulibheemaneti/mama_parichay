@@ -12,6 +12,9 @@ export default defineConfig({
             },
          },
          {
+            // Plain Node, no Nuxt runtime — so the modules under test import
+            // each other relatively rather than through the `~` alias, and
+            // nothing here needs to map it.
             test: {
                name: "unit",
                include: ["test/unit/*.{test,spec}.ts"],
