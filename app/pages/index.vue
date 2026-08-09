@@ -1,7 +1,7 @@
 <template>
    <main class="home">
       <header class="home__header">
-         <span class="home__crest" aria-hidden="true">🪷</span>
+         <img src="/og-logo.png" alt="" class="home__crest" width="64" height="64" aria-hidden="true" />
          <h1 class="home__title">
             {{ t("home.heading") }}
          </h1>
@@ -76,9 +76,16 @@ useSchemaOrg([
    }
 
    &__crest {
+      // Same mark as the topbar brand. The source PNG carries generous
+      // transparent padding and a glow, so it is sized past the intended
+      // optical height and the slack is pulled back in with a negative
+      // block margin (see SiteBrand).
       display: block;
-      font-size: 2rem;
-      line-height: 1;
+      margin-inline: auto;
+      margin-block: -1rem;
+      inline-size: 4.5rem;
+      block-size: 4.5rem;
+      object-fit: contain;
    }
 
    &__title {

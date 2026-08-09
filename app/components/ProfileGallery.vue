@@ -8,7 +8,7 @@
                   decoding="async" @error="failed.add(index)" />
             </button>
             <div v-else class="gallery__thumb gallery__thumb--empty" aria-hidden="true">
-               <span class="gallery__mark">🪷</span>
+               <img src="/og-logo.png" alt="" class="gallery__mark" width="56" height="56" />
             </div>
          </li>
       </ul>
@@ -141,8 +141,12 @@ onBeforeUnmount(() => {
       border-radius: 0.7rem;
    }
 
+   // Brand mark stands in for a missing photo; muted so it reads as an
+   // empty slot rather than content.
    &__mark {
-      font-size: 1.75rem;
+      inline-size: 3.5rem;
+      block-size: 3.5rem;
+      object-fit: contain;
       opacity: 0.55;
    }
 }

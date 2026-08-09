@@ -6,7 +6,9 @@
 
       <article class="profile__card ornate-frame">
          <header class="profile__header">
-            <span class="profile__crest" aria-hidden="true">🪷</span>
+            <div class="profile__crest" aria-hidden="true">
+               <img src="/og-logo.png" alt="" class="profile__crest-mark" width="48" height="48" />
+            </div>
             <div class="profile__portrait">
                <ProfileAvatar :name="profile.fullName" :photo="profile.photo" size="lg" />
             </div>
@@ -14,12 +16,12 @@
                <h1 class="profile__name">
                   {{ profile.fullName }}
                </h1>
-               <p class="profile__summary">
+               <!-- <p class="profile__summary">
                   {{ formatFaith(profile.faith) }} · {{ profile.birth.place }}
                </p>
                <p class="profile__role">
                   {{ formatOccupation(profile.occupation) }}
-               </p>
+               </p> -->
             </div>
          </header>
 
@@ -139,15 +141,13 @@
             <h2 class="banner">
                Photos
             </h2>
-            <ProfileGallery :name="profile.fullName" :images="profile.gallery" />
+            <ProfileGallery class="panel" :name="profile.fullName" :images="profile.gallery" />
          </section>
       </article>
    </main>
 </template>
 
 <script lang="ts" setup>
-import { getProfileBySlug } from "~/data/profiles"
-
 defineOptions({ name: "ProfileDetailPage" })
 
 const route = useRoute()
@@ -271,8 +271,15 @@ useSchemaOrg([
       justify-content: center;
       gap: 0.75rem;
       margin-block-end: 1rem;
-      font-size: 1.5rem;
-      line-height: 1;
+
+      // Same mark as the topbar brand; the source PNG's transparent padding
+      // and glow are absorbed with a negative block margin (see SiteBrand).
+      &-mark {
+         margin-block: -0.8rem;
+         inline-size: 3.5rem;
+         block-size: 3.5rem;
+         object-fit: contain;
+      }
 
       &::before,
       &::after {
@@ -330,12 +337,12 @@ useSchemaOrg([
          margin-block-end: -1rem;
       }
 
-      > .panel,
+      >.panel,
       > :deep(.gallery) {
          inline-size: 100%;
       }
 
-      > .panel {
+      >.panel {
          padding-block-start: 1.9rem;
       }
    }

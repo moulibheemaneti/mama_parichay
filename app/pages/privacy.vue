@@ -6,7 +6,7 @@
 
       <article class="legal__card ornate-frame">
          <header class="legal__header">
-            <span class="legal__crest" aria-hidden="true">🪷</span>
+            <img src="/og-logo.png" alt="" class="legal__crest" width="56" height="56" aria-hidden="true" />
             <h1 class="legal__title">
                {{ t("privacy.heading") }}
             </h1>
@@ -153,9 +153,13 @@ useSchemaOrg([defineWebPage()])
    }
 
    &__crest {
+      // Matches the topbar brand and the home hero; see `home__crest`.
       display: block;
-      font-size: 1.75rem;
-      line-height: 1;
+      margin-inline: auto;
+      margin-block: -0.85rem;
+      inline-size: 3.75rem;
+      block-size: 3.75rem;
+      object-fit: contain;
    }
 
    &__title {
