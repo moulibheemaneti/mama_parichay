@@ -109,9 +109,9 @@ export const profiles: Profile[] = [
       gender: "Male",
       photo: "/gallery/mouli-bheemaneti/mb-in-traditional-wear.png",
       birth: {
-         date: "1996-06-12",
-         time: "09:20",
-         place: "Guntur, Andhra Pradesh",
+         date: "1999-11-02",
+         time: "18:20",
+         place: "Hyderabad, Telangana",
       },
       faith: {
          religion: "Hindu",
@@ -123,34 +123,35 @@ export const profiles: Profile[] = [
          gotram: "Lakkanti",
       },
       physical: {
-         heightCm: 180,
-         weightKg: 72,
-         complexion: "Fair",
-         bloodGroup: "O+",
+         heightCm: 164,
+         weightKg: 64,
+         complexion: "Dusky",
+         bloodGroup: "B+",
       },
       education: {
          qualification: "B.Tech, Computer Science",
-         institution: "IIT Bombay",
+         institution: "IIIT Sricity, Chittoor",
       },
       occupation: {
          title: "Senior Software Engineer",
-         employer: "Atlassian",
-         location: "Bengaluru",
+         employer: "GTET (Narayana Group of Educational Institution)",
+         location: "Hyderabad (Onsite)",
       },
       family: [
          {
             relation: "Father",
             person: {
-               fullName: "B. Ramakrishna",
+               fullName: "B. Bhaskara Naidu",
                gender: "Male",
-               occupation: { title: "Retired Bank Manager" },
+               occupation: { title: "Govt. Employee in Defence Ministry, ODF" },
             },
          },
          {
             relation: "Mother",
             person: {
-               fullName: "B. Saroja",
+               fullName: "B. Bhuvaneswari",
                gender: "Female",
+               education: { qualification: "Completed M.Tech from JNTUH" },
                occupation: { title: "Home maker" },
             },
          },
@@ -158,7 +159,15 @@ export const profiles: Profile[] = [
             relation: "Younger Sister",
             person: {
                gender: "Female",
-               education: { qualification: "Pursuing M.Sc" },
+               education: { qualification: "Completed B.A & B.Ed" },
+               residence: "Hyderabad",
+            },
+         },
+         {
+            relation: "Younger Brother",
+            person: {
+               gender: "Male",
+               education: { qualification: "Completed Intermediate (MBiPC)" },
                residence: "Hyderabad",
             },
          },
@@ -166,9 +175,9 @@ export const profiles: Profile[] = [
       seeking: "Seeking a kind, ambitious partner who values honesty, family and shared growth to build a warm home together.",
       contact: {
          relation: "Father",
-         phone: "9876543210",
+         phone: "9491677472",
          addresses: [
-            "Flat 402, Sai Residency, Kothapet, Guntur - 522001 (AP)",
+            "Qtr No. 3829, ODF Estate, Hyderabad - 502205 (TG)",
          ],
       },
       gallery: [
@@ -179,8 +188,3 @@ export const profiles: Profile[] = [
       ],
    },
 ]
-
-/** Look up a single profile by its slug. */
-export function getProfileBySlug(slug: string): Profile | undefined {
-   return profiles.find((profile) => profile.slug === slug)
-}
