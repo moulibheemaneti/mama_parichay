@@ -25,7 +25,7 @@ import type {
 } from "~/types/profile"
 
 /** Zero-pad a count the way a printed biodata does: 1 → "01". */
-const pad = (count: number): string => String(count).padStart(2, "0")
+export const padCount = (count: number): string => String(count).padStart(2, "0")
 
 /** Join the parts that are present, dropping blanks. */
 const join = (parts: (string | undefined)[], separator: string): string =>
@@ -50,7 +50,7 @@ export const formatBirthTime = (time: Time24): string => {
    const hour = Number(rawHour)
    const meridiem = hour < 12 ? "AM" : "PM"
 
-   return `${pad(hour % 12 || 12)}.${minute} ${meridiem}`
+   return `${padCount(hour % 12 || 12)}.${minute} ${meridiem}`
 }
 
 /** `29.10.2003 @ 03.55 PM`, or just the date when no time is recorded. */
@@ -148,11 +148,12 @@ const isSibling = (relation: Relation): relation is keyof typeof SIBLING_RELATIO
    relation in SIBLING_RELATIONS
 
 /**
- * Derive the sibling summary line from the family rows, e.g.
- * `02 brothers` or `01 brother, 02 sisters`. Counting rather than
- * storing this means adding a sibling can never leave a stale total.
+ * Count the siblings in the family rows. Returns the counts rather than
+ * a rendered line ("02 brothers") because that line is translated — the
+ * page pluralises it through i18n. Counting rather than storing means
+ * adding a sibling can never leave a stale total.
  */
-export const summariseSiblings = (family: FamilyMember[]): string => {
+export const countSiblings = (family: FamilyMember[]): { brothers: number, sisters: number } => {
    let brothers = 0
    let sisters = 0
 
@@ -166,25 +167,25 @@ export const summariseSiblings = (family: FamilyMember[]): string => {
          sisters += 1
    }
 
-   const parts = [
-      brothers && `${pad(brothers)} ${brothers === 1 ? "brother" : "brothers"}`,
-      sisters && `${pad(sisters)} ${sisters === 1 ? "sister" : "sisters"}`,
-   ].filter(Boolean) as string[]
-
-   return parts.length ? parts.join(", ") : "None"
+   return { brothers, sisters }
 }
+
+/**
+ * The i18n key segment for a relation: `Elder Brother` →
+ * `elder-brother`. The `Relation` union is the source of truth, so a new
+ * relation surfaces as a missing translation rather than raw English.
+ */
+export const relationKey = (relation: Relation): string =>
+   relation.toLowerCase().replace(/ /g, "-")
 
 /// --------------------------------------------------
 /// Contact
 /// --------------------------------------------------
 
 /**
- * Resolve the contact's display name by following `contact.relation`
- * into the family rows, e.g. `Father: B. Bhaskara Naidu`. Falls back to
- * the bare relation when that person's name is not published.
+ * Resolve the contact's name by following `contact.relation` into the
+ * family rows. Returns just the name — the relation that labels it is
+ * translated, so the page joins the two.
  */
-export const formatContactName = (contact: ContactPoint, family: FamilyMember[]): string => {
-   const member = family.find((entry) => entry.relation === contact.relation)
-
-   return join([contact.relation, member?.person.fullName], ": ")
-}
+export const resolveContactName = (contact: ContactPoint, family: FamilyMember[]): string | undefined =>
+   family.find((entry) => entry.relation === contact.relation)?.person.fullName

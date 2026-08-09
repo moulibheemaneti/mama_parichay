@@ -3,7 +3,7 @@
       <ul class="gallery__grid" role="list">
          <li v-for="(image, index) in images" :key="image.src">
             <button v-if="!failed.has(index)" type="button" class="gallery__thumb"
-               :aria-label="`View photo ${index + 1} of ${name}`" @click="open(index)">
+               :aria-label="t('profile.gallery.view', { index: index + 1, name })" @click="open(index)">
                <img :src="image.src" :alt="image.alt" class="gallery__img" width="400" height="500" loading="lazy"
                   decoding="async" @error="failed.add(index)" />
             </button>
@@ -14,18 +14,18 @@
       </ul>
 
       <div v-if="activeIndex !== null" ref="dialogEl" class="lightbox" role="dialog" aria-modal="true"
-         :aria-label="`Photo ${activeIndex + 1} of ${name}`" @click.self="close">
-         <button ref="closeBtn" type="button" class="lightbox__btn lightbox__close" aria-label="Close gallery"
-            @click="close">
+         :aria-label="t('profile.gallery.photo', { index: activeIndex + 1, name })" @click.self="close">
+         <button ref="closeBtn" type="button" class="lightbox__btn lightbox__close"
+            :aria-label="t('profile.gallery.close')" @click="close">
             ✕
          </button>
-         <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--prev" aria-label="Previous photo"
-            @click="step(-1)">
+         <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--prev"
+            :aria-label="t('profile.gallery.previous')" @click="step(-1)">
             ‹
          </button>
          <img :src="images[activeIndex]?.src ?? ''" :alt="images[activeIndex]?.alt ?? ''" class="lightbox__img" />
-         <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--next" aria-label="Next photo"
-            @click="step(1)">
+         <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--next"
+            :aria-label="t('profile.gallery.next')" @click="step(1)">
             ›
          </button>
       </div>
@@ -41,6 +41,8 @@ const props = defineProps<{
    name: string
    images: GalleryImage[]
 }>()
+
+const { t } = useI18n()
 
 const failed = reactive(new Set<number>())
 const activeIndex = ref<number | null>(null)

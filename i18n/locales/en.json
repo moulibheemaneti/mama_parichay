@@ -12,6 +12,52 @@
       "heading": "Privacy Policy",
       "updated": "Last updated: {date}"
    },
+   "profile": {
+      "back": "All profiles",
+      "sections": {
+         "personal": "Personal Information",
+         "career": "Education & Career",
+         "family": "Family Background",
+         "contact": "Contact Information",
+         "photos": "Photos"
+      },
+      "fields": {
+         "dob": "D.O.B.",
+         "birthPlace": "Place of Birth",
+         "faith": "Religion & Caste",
+         "horoscope": "Star & Rasi",
+         "gotram": "Gotram",
+         "height": "Height",
+         "weight": "Weight",
+         "complexion": "Complexion",
+         "bloodGroup": "Blood Group",
+         "education": "Education Qualification",
+         "career": "Career",
+         "siblings": "Siblings",
+         "contact": "Contact",
+         "address": "Address"
+      },
+      "relations": {
+         "father": "Father",
+         "mother": "Mother",
+         "elder-brother": "Elder Brother",
+         "younger-brother": "Younger Brother",
+         "elder-sister": "Elder Sister",
+         "younger-sister": "Younger Sister"
+      },
+      "siblings": {
+         "brothers": "{count} brother | {count} brothers",
+         "sisters": "{count} sister | {count} sisters",
+         "none": "None"
+      },
+      "gallery": {
+         "view": "View photo {index} of {name}",
+         "photo": "Photo {index} of {name}",
+         "close": "Close gallery",
+         "previous": "Previous photo",
+         "next": "Next photo"
+      }
+   },
    "seo": {
       "home": {
          "title": "Mama Parichay — Biodata Maker for Alliances",
@@ -20,6 +66,10 @@
       "privacy": {
          "title": "Privacy Policy — Mama Parichay",
          "description": "How Mama Parichay collects, uses and protects the information you share when creating a marriage biodata."
+      },
+      "profile": {
+         "title": "{name} — Marriage Biodata",
+         "description": "{name}, {occupation} from {place}. {faith} marriage biodata with family, education and horoscope details."
       }
    }
 }

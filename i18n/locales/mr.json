@@ -12,6 +12,52 @@
       "heading": "गोपनीयता धोरण",
       "updated": "शेवटचे अद्यतन: {date}"
    },
+   "profile": {
+      "back": "सर्व बायोडाटा",
+      "sections": {
+         "personal": "वैयक्तिक माहिती",
+         "career": "शिक्षण व करिअर",
+         "family": "कौटुंबिक पार्श्वभूमी",
+         "contact": "संपर्क माहिती",
+         "photos": "छायाचित्रे"
+      },
+      "fields": {
+         "dob": "जन्मतारीख",
+         "birthPlace": "जन्मस्थळ",
+         "faith": "धर्म व जात",
+         "horoscope": "नक्षत्र व रास",
+         "gotram": "गोत्र",
+         "height": "उंची",
+         "weight": "वजन",
+         "complexion": "वर्ण",
+         "bloodGroup": "रक्तगट",
+         "education": "शैक्षणिक पात्रता",
+         "career": "करिअर",
+         "siblings": "भावंडे",
+         "contact": "संपर्क",
+         "address": "पत्ता"
+      },
+      "relations": {
+         "father": "वडील",
+         "mother": "आई",
+         "elder-brother": "मोठा भाऊ",
+         "younger-brother": "धाकटा भाऊ",
+         "elder-sister": "मोठी बहीण",
+         "younger-sister": "धाकटी बहीण"
+      },
+      "siblings": {
+         "brothers": "{count} भाऊ | {count} भाऊ",
+         "sisters": "{count} बहीण | {count} बहिणी",
+         "none": "नाही"
+      },
+      "gallery": {
+         "view": "{name} यांचे छायाचित्र {index} पहा",
+         "photo": "{name} यांचे छायाचित्र {index}",
+         "close": "गॅलरी बंद करा",
+         "previous": "मागील छायाचित्र",
+         "next": "पुढील छायाचित्र"
+      }
+   },
    "seo": {
       "home": {
          "title": "मामा परिचय — विवाह बायोडाटा निर्माता",
@@ -20,6 +66,10 @@
       "privacy": {
          "title": "गोपनीयता धोरण — मामा परिचय",
          "description": "विवाह बायोडाटा तयार करताना तुम्ही सामायिक केलेली माहिती मामा परिचय कशी संकलित करते, वापरते आणि सुरक्षित ठेवते."
+      },
+      "profile": {
+         "title": "{name} — विवाह बायोडाटा",
+         "description": "{name}, {place} येथील {occupation}. {faith} विवाह बायोडाटा — कुटुंब, शिक्षण आणि पत्रिका तपशिलांसह."
       }
    }
 }

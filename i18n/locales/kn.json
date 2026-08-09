@@ -12,6 +12,52 @@
       "heading": "ಗೌಪ್ಯತಾ ನೀತಿ",
       "updated": "ಕೊನೆಯ ನವೀಕರಣ: {date}"
    },
+   "profile": {
+      "back": "ಎಲ್ಲಾ ಬಯೋಡೇಟಾಗಳು",
+      "sections": {
+         "personal": "ವೈಯಕ್ತಿಕ ಮಾಹಿತಿ",
+         "career": "ಶಿಕ್ಷಣ ಮತ್ತು ವೃತ್ತಿ",
+         "family": "ಕುಟುಂಬದ ಹಿನ್ನೆಲೆ",
+         "contact": "ಸಂಪರ್ಕ ಮಾಹಿತಿ",
+         "photos": "ಛಾಯಾಚಿತ್ರಗಳು"
+      },
+      "fields": {
+         "dob": "ಜನ್ಮ ದಿನಾಂಕ",
+         "birthPlace": "ಜನ್ಮ ಸ್ಥಳ",
+         "faith": "ಧರ್ಮ ಮತ್ತು ಜಾತಿ",
+         "horoscope": "ನಕ್ಷತ್ರ ಮತ್ತು ರಾಶಿ",
+         "gotram": "ಗೋತ್ರ",
+         "height": "ಎತ್ತರ",
+         "weight": "ತೂಕ",
+         "complexion": "ಮೈಬಣ್ಣ",
+         "bloodGroup": "ರಕ್ತದ ಗುಂಪು",
+         "education": "ವಿದ್ಯಾರ್ಹತೆ",
+         "career": "ವೃತ್ತಿ",
+         "siblings": "ಒಡಹುಟ್ಟಿದವರು",
+         "contact": "ಸಂಪರ್ಕ",
+         "address": "ವಿಳಾಸ"
+      },
+      "relations": {
+         "father": "ತಂದೆ",
+         "mother": "ತಾಯಿ",
+         "elder-brother": "ಅಣ್ಣ",
+         "younger-brother": "ತಮ್ಮ",
+         "elder-sister": "ಅಕ್ಕ",
+         "younger-sister": "ತಂಗಿ"
+      },
+      "siblings": {
+         "brothers": "{count} ಸಹೋದರ | {count} ಸಹೋದರರು",
+         "sisters": "{count} ಸಹೋದರಿ | {count} ಸಹೋದರಿಯರು",
+         "none": "ಇಲ್ಲ"
+      },
+      "gallery": {
+         "view": "{name} ಅವರ ಛಾಯಾಚಿತ್ರ {index} ನೋಡಿ",
+         "photo": "{name} ಅವರ ಛಾಯಾಚಿತ್ರ {index}",
+         "close": "ಗ್ಯಾಲರಿ ಮುಚ್ಚಿ",
+         "previous": "ಹಿಂದಿನ ಛಾಯಾಚಿತ್ರ",
+         "next": "ಮುಂದಿನ ಛಾಯಾಚಿತ್ರ"
+      }
+   },
    "seo": {
       "home": {
          "title": "ಮಾಮ ಪರಿಚಯ್ — ವಿವಾಹ ಬಯೋಡೇಟಾ ತಯಾರಕ",
@@ -20,6 +66,10 @@
       "privacy": {
          "title": "ಗೌಪ್ಯತಾ ನೀತಿ — ಮಾಮ ಪರಿಚಯ್",
          "description": "ವಿವಾಹ ಬಯೋಡೇಟಾ ರಚಿಸುವಾಗ ನೀವು ಹಂಚಿಕೊಳ್ಳುವ ಮಾಹಿತಿಯನ್ನು ಮಾಮ ಪರಿಚಯ್ ಹೇಗೆ ಸಂಗ್ರಹಿಸುತ್ತದೆ, ಬಳಸುತ್ತದೆ ಮತ್ತು ರಕ್ಷಿಸುತ್ತದೆ."
+      },
+      "profile": {
+         "title": "{name} — ವಿವಾಹ ಬಯೋಡೇಟಾ",
+         "description": "{name}, {place} ನಿಂದ {occupation}. {faith} ವಿವಾಹ ಬಯೋಡೇಟಾ — ಕುಟುಂಬ, ಶಿಕ್ಷಣ ಮತ್ತು ಜಾತಕ ವಿವರಗಳೊಂದಿಗೆ."
       }
    }
 }

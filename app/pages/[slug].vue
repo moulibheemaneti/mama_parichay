@@ -1,7 +1,7 @@
 <template>
    <main class="profile">
       <NuxtLink class="profile__back" :to="localePath('/')">
-         ← All profiles
+         ← {{ t("profile.back") }}
       </NuxtLink>
 
       <article class="profile__card ornate-frame">
@@ -29,7 +29,7 @@
 
          <section class="profile__section">
             <h2 class="banner">
-               Personal Information
+               {{ t("profile.sections.personal") }}
             </h2>
             <dl class="details panel">
                <div v-for="detail in personalDetails" :key="detail.label" class="details__row">
@@ -47,12 +47,12 @@
 
          <section class="profile__section">
             <h2 class="banner">
-               Education &amp; Career
+               {{ t("profile.sections.career") }}
             </h2>
             <dl class="details details--stacked panel">
                <div class="details__row">
                   <dt class="details__label">
-                     Education Qualification
+                     {{ t("profile.fields.education") }}
                   </dt>
                   <dd class="details__value">
                      {{ formatEducation(profile.education) }}
@@ -60,7 +60,7 @@
                </div>
                <div class="details__row">
                   <dt class="details__label">
-                     Career
+                     {{ t("profile.fields.career") }}
                   </dt>
                   <dd class="details__value">
                      {{ formatOccupation(profile.occupation) }}
@@ -73,12 +73,12 @@
 
          <section class="profile__section">
             <h2 class="banner">
-               Family Background
+               {{ t("profile.sections.family") }}
             </h2>
             <dl class="details details--stacked panel">
                <div v-for="member in profile.family" :key="member.relation" class="details__row">
                   <dt class="details__label">
-                     {{ member.relation }}
+                     {{ t(`profile.relations.${relationKey(member.relation)}`) }}
                   </dt>
                   <dd class="details__value">
                      {{ formatPerson(member.person) }}
@@ -86,10 +86,10 @@
                </div>
                <div class="details__row">
                   <dt class="details__label">
-                     Siblings
+                     {{ t("profile.fields.siblings") }}
                   </dt>
                   <dd class="details__value">
-                     {{ summariseSiblings(profile.family) }}
+                     {{ siblingSummary }}
                   </dd>
                </div>
             </dl>
@@ -108,21 +108,21 @@
 
          <section class="profile__section">
             <h2 class="banner">
-               Contact Information
+               {{ t("profile.sections.contact") }}
             </h2>
             <dl class="details details--stacked panel">
                <div class="details__row">
                   <dt class="details__label">
-                     Contact
+                     {{ t("profile.fields.contact") }}
                   </dt>
                   <dd class="details__value">
-                     {{ formatContactName(profile.contact, profile.family) }} —
+                     {{ contactName }} —
                      <a class="details__link" :href="`tel:${profile.contact.phone}`">{{ profile.contact.phone }}</a>
                   </dd>
                </div>
                <div class="details__row">
                   <dt class="details__label">
-                     Address
+                     {{ t("profile.fields.address") }}
                   </dt>
                   <dd class="details__value">
                      <ol class="addresses">
@@ -139,7 +139,7 @@
 
          <section v-if="profile.gallery.length" class="profile__section">
             <h2 class="banner">
-               Photos
+               {{ t("profile.sections.photos") }}
             </h2>
             <ProfileGallery class="panel" :name="profile.fullName" :images="profile.gallery" />
          </section>
@@ -151,6 +151,7 @@
 defineOptions({ name: "ProfileDetailPage" })
 
 const route = useRoute()
+const { t } = useI18n()
 const localePath = useLocalePath()
 const slug = computed(() => String(route.params.slug))
 
@@ -164,36 +165,61 @@ if (!profile) {
    })
 }
 
+// Labels are translated; the values are the authored records and stay
+// as written, so a name or an employer reads the same in every locale.
 const personalDetails = computed(() => [
-   { label: "D.O.B.", value: formatBirth(profile.birth) },
-   { label: "Place of Birth", value: profile.birth.place },
-   { label: "Religion & Caste", value: formatFaith(profile.faith) },
-   { label: "Star & Rasi", value: formatHoroscope(profile.horoscope) },
-   { label: "Gotram", value: profile.horoscope.gotram },
-   { label: "Height", value: formatHeight(profile.physical.heightCm) },
-   { label: "Weight", value: formatWeight(profile.physical.weightKg) },
-   { label: "Complexion", value: profile.physical.complexion },
-   { label: "Blood Group", value: formatBloodGroup(profile.physical.bloodGroup) },
+   { label: t("profile.fields.dob"), value: formatBirth(profile.birth) },
+   { label: t("profile.fields.birthPlace"), value: profile.birth.place },
+   { label: t("profile.fields.faith"), value: formatFaith(profile.faith) },
+   { label: t("profile.fields.horoscope"), value: formatHoroscope(profile.horoscope) },
+   { label: t("profile.fields.gotram"), value: profile.horoscope.gotram },
+   { label: t("profile.fields.height"), value: formatHeight(profile.physical.heightCm) },
+   { label: t("profile.fields.weight"), value: formatWeight(profile.physical.weightKg) },
+   { label: t("profile.fields.complexion"), value: profile.physical.complexion },
+   { label: t("profile.fields.bloodGroup"), value: formatBloodGroup(profile.physical.bloodGroup) },
 ])
 
-const description = [
-   profile.fullName,
-   formatFaith(profile.faith),
-   formatOccupation(profile.occupation),
-].join(" · ")
+// "01 brother, 02 sisters" — counted from the family rows, then
+// pluralised per locale. Zero-padded the way a printed biodata does.
+const siblingSummary = computed(() => {
+   const { brothers, sisters } = countSiblings(profile.family)
+
+   const parts = [
+      brothers && t("profile.siblings.brothers", { count: padCount(brothers) }, brothers),
+      sisters && t("profile.siblings.sisters", { count: padCount(sisters) }, sisters),
+   ].filter(Boolean)
+
+   return parts.length ? parts.join(", ") : t("profile.siblings.none")
+})
+
+// `Father: B. Bhaskara Naidu` — translated relation, authored name.
+const contactName = computed(() => {
+   const relation = t(`profile.relations.${relationKey(profile.contact.relation)}`)
+   const name = resolveContactName(profile.contact, profile.family)
+
+   return name ? `${relation}: ${name}` : relation
+})
+
+// Title, description and OG card all derive from the record via
+// `profileSeo`, so every profile is covered by the same rules and the
+// unit tests can assert them for all of them at once.
+const seo = computed(() => profileSeo(profile, (key, params) => t(key, params)))
 
 useAppSeo({
-   title: `${profile.fullName} — Mama Parichay`,
-   description: description.slice(0, 155),
+   title: seo.value.title,
+   description: seo.value.description,
    ogType: "article",
 })
+
+defineOgImage("Profile", seo.value.ogImage)
 
 // Absolute URLs for the gallery images so search engines can resolve them
 // (schema.org requires fully-qualified contentUrl values).
 const site = useSiteConfig()
+const absolute = (path: string) => `${site.url}${path}`
 const galleryImages = computed(() =>
    profile.gallery.map((image) => ({
-      url: `${site.url}${image.src}`,
+      url: absolute(image.src),
       alt: image.alt,
    })),
 )
@@ -209,7 +235,9 @@ useSchemaOrg([
       ...(profile.occupation.employer && {
          worksFor: { "@type": "Organization", "name": profile.occupation.employer },
       }),
-      image: [profile.photo, ...galleryImages.value.map((image) => image.url)],
+      // Absolute, like the gallery URLs — schema.org will not resolve a
+      // root-relative path, so the portrait has to be qualified too.
+      image: [absolute(profile.photo), ...galleryImages.value.map((image) => image.url)],
    }),
    {
       "@type": "ImageGallery",

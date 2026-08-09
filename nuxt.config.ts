@@ -141,4 +141,11 @@ export default defineNuxtConfig({
          logo: "https://www.mamaparichay.com/og-logo.png",
       },
    },
+
+   // The profile pages are dynamic SSR routes, so they are not
+   // auto-discovered. `server/api/__sitemap__/urls.ts` generates them from
+   // `data/profiles.ts` — see that file for why.
+   sitemap: {
+      sources: ["/api/__sitemap__/urls"],
+   },
 })

@@ -16,6 +16,16 @@ Asserts every SEO surface renders, with a pass/fail summary:
 - `/hi` is localized (`lang="hi-IN"`, translated title)
 - the dynamic OG image renders as a PNG
 
+Then, for **every** profile in `app/data/profiles.ts` (the slugs are read
+straight from that file, so adding a biodata widens the run automatically):
+
+- title, meta description, self-referencing canonical, `og:title`,
+  `og:type=article` and `Person` JSON-LD
+- the URL and its photos are listed in the sitemap
+- the per-profile OG card renders as a PNG
+- `/te/<slug>` is genuinely localized — translated labels *and* meta, so the
+  six hreflang alternates are not duplicate content
+
 ```bash
 scripts/seo/verify.sh                 # build if needed, boot, check
 BUILD=1 scripts/seo/verify.sh         # force a fresh build first
