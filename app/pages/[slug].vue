@@ -150,20 +150,34 @@
 <script lang="ts" setup>
 defineOptions({ name: "ProfileDetailPage" })
 
+// The unknown-slug 404 is raised in middleware, not in setup below: every
+// unmatched URL on the site lands on this route, and throwing from setup
+// leaves the component half-initialised — its render function still runs
+// and dies on `$setup.localePath is not a function`, which corrupts the
+// vnode tree and stops error.vue's "back to home" from ever repainting.
+// Middleware aborts before the component is created, so none of that happens.
+definePageMeta({
+   middleware: [
+      (to) => {
+         if (!getProfileBySlug(String(to.params.slug))) {
+            return abortNavigation(createError({
+               statusCode: 404,
+               statusMessage: "Profile not found",
+               fatal: true,
+            }))
+         }
+      },
+   ],
+})
+
 const route = useRoute()
 const { t } = useI18n()
 const localePath = useLocalePath()
 const slug = computed(() => String(route.params.slug))
 
-const profile = getProfileBySlug(slug.value)
-
-if (!profile) {
-   throw createError({
-      statusCode: 404,
-      statusMessage: "Profile not found",
-      fatal: true,
-   })
-}
+// Guaranteed by the middleware above; the assertion keeps the rest of the
+// component free of null checks.
+const profile = getProfileBySlug(slug.value)!
 
 // Labels are translated; the values are the authored records and stay
 // as written, so a name or an employer reads the same in every locale.

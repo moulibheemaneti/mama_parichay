@@ -12,6 +12,17 @@
       "heading": "Privacy Policy",
       "updated": "Last updated: {date}"
    },
+   "error": {
+      "notFound": {
+         "heading": "This page could not be found",
+         "body": "The biodata you are looking for may have been taken down, or the link may be incomplete. Do check the link, or go back to the home page."
+      },
+      "generic": {
+         "heading": "Something went wrong",
+         "body": "An unexpected error occurred at our end. Please try again in a little while."
+      },
+      "action": "Back to home"
+   },
    "profile": {
       "back": "All profiles",
       "sections": {
@@ -66,6 +77,16 @@
       "privacy": {
          "title": "Privacy Policy",
          "description": "How Mama Parichay collects, uses and protects the information you share when creating a marriage biodata."
+      },
+      "error": {
+         "notFound": {
+            "title": "Page Not Found",
+            "description": "The page you are looking for could not be found on Mama Parichay."
+         },
+         "generic": {
+            "title": "Something Went Wrong",
+            "description": "An unexpected error occurred on Mama Parichay. Please try again shortly."
+         }
       },
       "profile": {
          "title": "{name} — Marriage Biodata",
