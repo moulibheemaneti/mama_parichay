@@ -1,16 +1,15 @@
 import { describe, expect, it } from "vitest"
 import en from "../../i18n/locales/en.json"
-// Via the `~` alias (see vitest.config.ts) rather than a relative path, so
-// these resolve to the same module instances the utils themselves import —
-// otherwise the identity assertions below compare two copies of the data.
-import { profiles } from "~/data/profiles"
+// Relative, not aliased: `~` is a Nuxt convenience that exists only inside
+// the Nuxt/Vite environment, and these tests run in plain Node.
+import { profiles } from "../../app/data/profiles"
 import {
    getProfileBySlug,
    profileSeo,
    SEO_DESCRIPTION_MAX,
    SEO_TITLE_MAX,
    truncate,
-} from "~/utils/profiles"
+} from "../../app/utils/profiles"
 
 /// Slugs are stored on each profile rather than derived from the full
 /// name, so these assert the properties a stored primary key must hold —

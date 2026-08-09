@@ -14,12 +14,13 @@
 /// Auto-imported by Nuxt, so these are available in pages directly.
 /// --------------------------------------------------
 
-import type { Profile } from "~/types/profile"
-import { profiles } from "~/data/profiles"
-// Imported explicitly rather than relying on Nuxt's auto-import: this
-// module is also loaded straight from the unit tests and the sitemap
-// server route, neither of which runs the auto-import transform.
-import { formatFaith } from "~/utils/format"
+// Imported explicitly rather than relying on Nuxt's auto-import, and
+// relatively rather than through the `~` alias: this module is loaded
+// straight from the unit tests, which run outside the Nuxt environment
+// and so resolve neither. Relative paths work in every runner.
+import type { Profile } from "../types/profile"
+import { profiles } from "../data/profiles"
+import { formatFaith } from "./format"
 
 /** Look up a single profile by its slug. */
 export function getProfileBySlug(slug: string): Profile | undefined {
