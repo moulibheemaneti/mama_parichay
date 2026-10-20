@@ -36,7 +36,7 @@
       "@nuxt/image": "^2.2.0",
       "@nuxt/test-utils": "^4.3.4",
       "@nuxtjs/i18n": "^10.6.0",
-      "@nuxtjs/seo": "^5.3.10",
+      "@nuxtjs/seo": "^6.0.1",
       "@resvg/resvg-js": "^2.6.2",
       "@semantic-release/changelog": "^7.0.0",
       "@semantic-release/commit-analyzer": "^13.0.1",
